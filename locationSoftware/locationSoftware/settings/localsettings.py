@@ -7,5 +7,6 @@ DATABASES = {
         "HOST": "127.0.0.1",
         "PORT": "5432",
     }
+
 }
 LANGUAGE_CODE = "fr-FR"
