@@ -1,0 +1,22 @@
+{% extends 'appLocation/master.html' %}
+
+    {% block title %}
+        Louer la maison
+    {% endblock %}
+
+
+    {% block content %}
+        <h1>Louer cette maison</h1>
+        <form method="post" style="padding: 0px 20px; space-y:5px">
+            {% csrf_token %}
+
+            {{ form.as_p }}
+            <div style="display: flex">
+                <a href="les-maisons" >
+                    <button type="reset">Annuler</button>
+                </a>
+                <button type="submit">Confirmer</button>
+            </div>
+        </form>
+
+    {% endblock %}

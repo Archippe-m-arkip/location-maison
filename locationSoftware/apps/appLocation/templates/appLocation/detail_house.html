@@ -1,0 +1,43 @@
+{% extends "appLocation/master.html" %}
+
+    {% block title %}
+        Detail maison
+    {% endblock %}
+    {% block content %}
+       <ul>
+
+            <div style="display: flex; justify-content:space-between; padding-right:50px;">
+                <h1>Details house</h1>
+                <div style="display:flex; align-items: center; gap:20px">
+                    <h3>
+                         {% if user.is_authenticated %}
+
+                                {{ user.username }}
+
+                        {% endif %}
+                    </h3>
+                    <p>Logout</p>
+                </div>
+            </div>
+           <ul>
+                <li>Maison numero</li>
+                <li>Nombre des chambres: {{theHouse.nbrRooms}}</li>
+                <li>Superficie de :  {{theHouse.superficies}}m<sup>2</sup></li>
+                <li>{{theHouse.quartier}}</li>
+                <br>
+                <li>
+                    <a href="{% url 'houses' %}"  style="padding-right:10px">Retourner en arriere</a>
+                    {% if user.is_authenticated %}
+                        Réserver cette maison
+                    {% else %}
+                        <p>Vous devez être connecté pour réserver cette maison. <a href="{% url 'sign_in_user' %}">Connectez-vous</a></p>
+                    {% endif %}
+                </li>
+           </ul>
+
+            <br>
+            <br>
+
+        </ul>
+    {% endblock %}
+

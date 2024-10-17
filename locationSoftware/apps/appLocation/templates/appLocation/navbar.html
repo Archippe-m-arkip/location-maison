@@ -1,0 +1,27 @@
+<nav>
+    <div style="display:flex; justify-content:space-between">
+        <div>
+            <h2>Logo</h2>
+
+        </div>
+        <div>
+            <ul style="display: flex; width:auto; gap: 20px;">
+                <li><a href="{% url 'home' %}">Accueil</a></li>
+                <li><a href="{% url 'houses' %}">Voir les maisons</a></li>
+
+            </ul>
+        </div>
+        <div>
+             <div style="display:flex; align-items: center; gap:20px">
+                    <h3>
+                         {% if user.is_authenticated %}
+
+                                {{ user.username }}
+
+                        {% endif %}
+                    </h3>
+                    <p>Logout</p>
+                </div>
+        </div>
+    </div>
+</nav>

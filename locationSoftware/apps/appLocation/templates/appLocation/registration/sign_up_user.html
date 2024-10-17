@@ -1,0 +1,17 @@
+{% extends 'appLocation/master.html' %}
+
+{% block title %}
+       Creer un compte
+    {% endblock %}
+
+
+    {% block content %}
+        <h1>S'inscrire</h1>
+        <form method="post" action="{{ home }}" style="padding: 0px 20px; space-y:5px">
+            {% csrf_token %}
+
+            {{ form.as_p }}
+            <button type="submit">S'incrire</button>
+        </form>
+        <p>Vous etes deja inscrit ? <a href="{% url 'sign_in_user' %}">Se connecter</a></p>
+    {% endblock %}

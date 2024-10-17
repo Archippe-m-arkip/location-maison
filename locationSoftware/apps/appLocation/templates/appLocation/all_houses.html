@@ -1,0 +1,26 @@
+{% extends "appLocation/master.html" %}
+
+{% block title %}
+    Toutes les maisons
+{% endblock %}
+ {% block content %}
+    <h1>Toutes les maisons</h1>
+    <ul>
+
+        {% for house in houses%}
+            <li>Maison numero</li>
+            <li>Nombre des chambres: {{house.nbrRooms}}</li>
+            <li>Superficie de :  {{house.superficies}}m<sup>2</sup></li>
+            <li>{{house.quartier}}</li>
+            <li>
+                <a href="/les-maisons/details/{{ house.id }}" >Voir cette maison</a>
+
+            </li>
+            <br>
+            <br>
+
+        {% endfor %}
+    </ul>
+<a href="/" >Retourner a l'accueil</a>
+{% endblock %}
+

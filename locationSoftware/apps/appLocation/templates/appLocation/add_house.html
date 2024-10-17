@@ -1,0 +1,17 @@
+{% extends 'appLocation/master.html' %}
+
+    {% block title %}
+        Ajout maison
+    {% endblock %}
+
+
+    {% block content %}
+        <h1>Ajouter une maison</h1>
+        <form method="post" style="padding: 0px 20px; space-y:5px">
+            {% csrf_token %}
+
+            {{ form.as_p }}
+            <button type="submit">Ajouter</button>
+        </form>
+
+    {% endblock %}
