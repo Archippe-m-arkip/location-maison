@@ -28,4 +28,4 @@ repos:
     rev: 1.7.10
     hooks:
     -   id: bandit
-#        files: ""
+        files: ""
