@@ -2,5 +2,5 @@ from django.apps import AppConfig
 
 
 class ApplocationConfig(AppConfig):
-    default_auto_field = 'django.db.models.BigAutoField'
-    name = 'apps.appLocation'
+    default_auto_field = "django.db.models.BigAutoField"
+    name = "apps.appLocation"

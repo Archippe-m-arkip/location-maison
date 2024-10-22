@@ -8,61 +8,82 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='Locator',
+            name="Locator",
             fields=[
-                ('id', models.AutoField(primary_key=True, serialize=False)),
-                ('name', models.CharField(max_length=50)),
-                ('phone', models.IntegerField()),
-                ('email', models.EmailField(max_length=254)),
-                ('password', models.CharField(max_length=255)),
+                ("id", models.AutoField(primary_key=True, serialize=False)),
+                ("name", models.CharField(max_length=50)),
+                ("phone", models.IntegerField()),
+                ("email", models.EmailField(max_length=254)),
+                ("password", models.CharField(max_length=255)),
             ],
         ),
         migrations.CreateModel(
-            name='Lodgement',
+            name="Lodgement",
             fields=[
-                ('id', models.AutoField(primary_key=True, serialize=False)),
-                ('nbrRooms', models.IntegerField()),
-                ('superficies', models.FloatField()),
-                ('address', models.CharField(max_length=150)),
+                ("id", models.AutoField(primary_key=True, serialize=False)),
+                ("nbrRooms", models.IntegerField()),
+                ("superficies", models.FloatField()),
+                ("address", models.CharField(max_length=150)),
             ],
         ),
         migrations.CreateModel(
-            name='Quartier',
+            name="Quartier",
             fields=[
-                ('id', models.AutoField(primary_key=True, serialize=False)),
-                ('name', models.CharField(max_length=70)),
+                ("id", models.AutoField(primary_key=True, serialize=False)),
+                ("name", models.CharField(max_length=70)),
             ],
         ),
         migrations.CreateModel(
-            name='Type_lodgement',
+            name="Type_lodgement",
             fields=[
-                ('id', models.AutoField(primary_key=True, serialize=False)),
-                ('type', models.CharField(max_length=30)),
+                ("id", models.AutoField(primary_key=True, serialize=False)),
+                ("type", models.CharField(max_length=30)),
             ],
         ),
         migrations.CreateModel(
-            name='Location',
+            name="Location",
             fields=[
-                ('id', models.AutoField(primary_key=True, serialize=False)),
-                ('date_begin', models.DateTimeField()),
-                ('date_end', models.DateTimeField()),
-                ('locator', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='locations_loc', to='appLocation.locator')),
-                ('lodgement_id', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='locations_lodg', to='appLocation.lodgement')),
+                ("id", models.AutoField(primary_key=True, serialize=False)),
+                ("date_begin", models.DateTimeField()),
+                ("date_end", models.DateTimeField()),
+                (
+                    "locator",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="locations_loc",
+                        to="appLocation.locator",
+                    ),
+                ),
+                (
+                    "lodgement_id",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="locations_lodg",
+                        to="appLocation.lodgement",
+                    ),
+                ),
             ],
         ),
         migrations.AddField(
-            model_name='lodgement',
-            name='quartier_id',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='lodgements', to='appLocation.quartier'),
+            model_name="lodgement",
+            name="quartier_id",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="lodgements",
+                to="appLocation.quartier",
+            ),
         ),
         migrations.AddField(
-            model_name='lodgement',
-            name='type_lodgement_id',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='lodgements', to='appLocation.type_lodgement'),
+            model_name="lodgement",
+            name="type_lodgement_id",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="lodgements",
+                to="appLocation.type_lodgement",
+            ),
         ),
     ]
