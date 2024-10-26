@@ -3,32 +3,32 @@ from django.contrib.auth import authenticate, login
 # from django.core.signals import request_started
 # from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
+from django.views import View
 from django.views.generic import TemplateView
+from django.views.generic.detail import DetailView
+from django.views.generic.edit import UpdateView
+from django.views.generic.list import ListView
 
 from .forms import FormLocation, HouseForm, SignUpUser, TypeForm
 from .models import Lodgement
 
 
-# def home(request):
-#     return render(request,'appLocation/index.html')
 class Home(TemplateView):
-    template_name = "appLocation/index.html"
+    template_name = "app_location/index.html"
 
 
-def show_all_houses(request):
-    houses = Lodgement.objects.all().values()
-    return render(request, "appLocation/all_houses.html", {"houses": houses})
+class ShowAllHouses(ListView):
+    model = Lodgement
 
 
-# class AllHouses(Lodgement):
-#     houses = Lodgement.objects.all()
-#     template_name = "application/all_houses.html"
+class DetailsHouse(DetailView):
+    model = Lodgement
 
 
-def detail_house(request, id):
-    # house = Lodgement.objects.get(id=id)
-    house = get_object_or_404(Lodgement, id=id)
-    return render(request, "appLocation/detail_house.html", {"theHouse": house})
+class UpdateHouse(UpdateView):
+    model = Lodgement
+    fields = "__all__"
+    success_url = ""
 
 
 def add_lodgement(request):
@@ -39,7 +39,7 @@ def add_lodgement(request):
             return redirect("houses")
     else:
         form = HouseForm()
-    return render(request, "appLocation/add_house.html", {"form": form})
+    return render(request, "app_location/add_house.html", {"form": form})
 
 
 def add_type_house(request):
@@ -50,7 +50,7 @@ def add_type_house(request):
             return redirect("houses")
     else:
         form = TypeForm()
-    return render(request, "appLocation/add_type_house.html", {"form": form})
+    return render(request, "app_location/add_type_house.html", {"form": form})
 
 
 def add_location(request):
@@ -61,7 +61,7 @@ def add_location(request):
             return redirect("houses")
         else:
             form = FormLocation()
-        return render(request, "appLocation/add_location.html", {"form": form})
+        return render(request, "app_location/add_location.html", {"form": form})
 
 
 def signing_up(request):
@@ -76,15 +76,16 @@ def signing_up(request):
             return redirect("houses")  # Redirection après inscription
     else:
         form = SignUpUser()
-    return render(request, "appLocation/registration/sign_up_user.html", {"form": form})
+    return render(
+        request, "app_location/registration/sign_up_user.html", {"form": form}
+    )
 
 
 def signing_in(request):
-    return render(request, "appLocation/registration/sign_in_user.html")
+    return render(request, "app_location/registration/sign_in_user.html")
 
 
-#
 # def reservation(request,id):
 #         location = Lodgement.objects.get(id=id)
 #
-#         return render(request, 'appLocation/detail_house.html', {'theHouse': house})
+#         return render(request, 'app_location/lodgement_detail.html', {'theHouse': house})

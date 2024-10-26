@@ -27,8 +27,11 @@
                 <br>
                 <li>
                     <a href="{% url 'houses' %}"  style="padding-right:10px">Retourner en arriere</a>
+                    <a href=""  style="padding-right:10px;padding-left:10px;color: green">Modifier</a>
                     {% if user.is_authenticated %}
-                        Réserver cette maison
+                    <form action="" method="post">
+                        <input type="submit" value=" Réserver cette maison">
+                    </form>
                     {% else %}
                         <p>Vous devez être connecté pour réserver cette maison. <a href="{% url 'sign_in_user' %}">Connectez-vous</a></p>
                     {% endif %}

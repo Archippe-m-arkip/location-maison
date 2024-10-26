@@ -5,3 +5,6 @@ isort
 bandit
 postgres
 terminator
+djangorestframework
+django-filter
+markdown

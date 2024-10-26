@@ -1,6 +1,7 @@
 from django.apps import AppConfig
 
 
-class ApplocationConfig(AppConfig):
+class AuthusersConfig(AppConfig):
     default_auto_field = "django.db.models.BigAutoField"
-    name = "apps.appLocation"
+    name = "apps.authuser"
+    label = "authuser"
