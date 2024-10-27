@@ -1,9 +1,10 @@
 from django.contrib import admin
 
 from ..authuser.models import User
-from .models import Lodgement, Quartier, TypeLodgement
+from .models import House, Paid, Payment, Rental
 
-admin.site.register(Quartier)
-admin.site.register(TypeLodgement)
-admin.site.register(Lodgement)
 admin.site.register(User)
+admin.site.register(House)
+admin.site.register(Rental)
+admin.site.register(Payment)
+admin.site.register(Paid)

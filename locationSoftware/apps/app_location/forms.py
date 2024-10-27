@@ -2,24 +2,18 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 
-from .models import Location, Lodgement, TypeLodgement
+from .models import House, Paid, Payment, Rental
 
 
 class HouseForm(forms.ModelForm):
     class Meta:
-        model = Lodgement
-        fields = "__all__"
-
-
-class TypeForm(forms.ModelForm):
-    class Meta:
-        model = TypeLodgement
+        model = House
         fields = "__all__"
 
 
 class FormLocation(forms.ModelForm):
     class Meta:
-        model = Location
+        model = Rental
         fields = "__all__"
 
 
@@ -29,3 +23,9 @@ class SignUpUser(UserCreationForm):
     class Meta:
         model = User
         fields = ("username", "email", "password1", "password2")
+
+
+class Payment(forms.ModelForm):
+    class Meta:
+        model = Payment
+        fields = "__all__"

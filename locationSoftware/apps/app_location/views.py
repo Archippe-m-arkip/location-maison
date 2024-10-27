@@ -9,8 +9,8 @@ from django.views.generic.detail import DetailView
 from django.views.generic.edit import UpdateView
 from django.views.generic.list import ListView
 
-from .forms import FormLocation, HouseForm, SignUpUser, TypeForm
-from .models import Lodgement
+from .forms import FormLocation, HouseForm, SignUpUser
+from .models import House
 
 
 class Home(TemplateView):
@@ -18,15 +18,15 @@ class Home(TemplateView):
 
 
 class ShowAllHouses(ListView):
-    model = Lodgement
+    model = House
 
 
 class DetailsHouse(DetailView):
-    model = Lodgement
+    model = House
 
 
 class UpdateHouse(UpdateView):
-    model = Lodgement
+    model = House
     fields = "__all__"
     success_url = ""
 
@@ -40,17 +40,6 @@ def add_lodgement(request):
     else:
         form = HouseForm()
     return render(request, "app_location/add_house.html", {"form": form})
-
-
-def add_type_house(request):
-    if request.method == "POST":
-        form = TypeForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect("houses")
-    else:
-        form = TypeForm()
-    return render(request, "app_location/add_type_house.html", {"form": form})
 
 
 def add_location(request):
@@ -83,9 +72,3 @@ def signing_up(request):
 
 def signing_in(request):
     return render(request, "app_location/registration/sign_in_user.html")
-
-
-# def reservation(request,id):
-#         location = Lodgement.objects.get(id=id)
-#
-#         return render(request, 'app_location/lodgement_detail.html', {'theHouse': house})
