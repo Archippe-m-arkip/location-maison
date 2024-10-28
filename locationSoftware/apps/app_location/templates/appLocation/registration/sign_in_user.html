@@ -7,17 +7,10 @@
 
     {% block content %}
         <h2>Connexion</h2>
-            <form method="post" action="{{ home }}">
-                {% csrf_token %}
-                <div>
-                    <label for="username">Nom d'utilisateur:</label>
-                    <input type="text" name="username" required id="username">
-                </div>
-                <div>
-                    <label for="password">Mot de passe:</label>
-                    <input type="password" name="password" required id="password">
-                </div>
-                <button type="submit">Se connecter</button>
-            </form>
+           <form method="post" action="{{ home }}" style="padding: 0px 20px; space-y:5px">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">S'incrire</button>
+        </form>
             <p>Pas encore inscrit ? <a href="{% url 'sign_up_user' %}">Inscrivez-vous ici</a></p>
     {% endblock %}

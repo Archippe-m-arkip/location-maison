@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     "apps.app_location",
     "apps.authuser",
     "apps.core",
+    "rest_framework",
 ]
 
 AUTH_USER_MODEL = "authuser.User"

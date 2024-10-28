@@ -1,18 +1,15 @@
 from django.contrib.auth import authenticate, login
-from django.contrib.auth.views import LoginView
-
-# from django.core.signals import request_started
-# from django.http import HttpResponse
+from django.contrib.auth.views import LoginView, LogoutView
+from django.http import Http404
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
-from django.views import View
-from django.views.generic import TemplateView
+from django.views.generic import DeleteView, TemplateView, View
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import UpdateView
 from django.views.generic.list import ListView
 
 from .forms import FormLocation, HouseForm, SignUpUser
-from .models import House
+from .models import House, Rental
 
 
 class Home(TemplateView):
@@ -23,23 +20,63 @@ class ShowAllHouses(ListView):
     model = House
     template_name = "appLocation/lodgement_list.html"
 
+    def get_queryset(self):
+        return House.objects.all()
+
 
 class DetailsHouse(DetailView):
     model = House
     template_name = "appLocation/lodgement_detail.html"
-    house = House()
     context_object_name = "theHouse"
+
+    def get_object(self, queryset=None):
+        obj = super().get_object(queryset)
+        if obj.is_deleted:
+            raise Http404("Cette maison a été supprimée.")
+        return obj
+
+
+class DeleteHouse(ListView):
+    def post(self, request, pk):
+        house = get_object_or_404(House, pk=pk)
+        house.delete()  # Suppression douce
+        return redirect("houses")
 
 
 class UpdateHouse(UpdateView):
     model = House
+    template_name = "appLocation/lodgement_form.html"
     fields = "__all__"
-    success_url = ""
+    success_url = "/les-maisons/"
 
 
-class UserLogin(LoginView):
+class UpdateRental(UpdateView):
+    model = Rental
+    template_name = "appLocation/rental_form.html"
+    fields = "__all__"
+    success_url = "/les-maisons/"
+
+
+class UserLoginView(LoginView):
     template_name = "registration/sign_in_user.html"
     success_url = reverse_lazy("home")
+
+
+class UserLogoutView(LogoutView):
+    next_page = reverse_lazy("home")
+
+
+class RegisterView(View):
+    def get(self, request):
+        form = SignUpUser()
+        return render(request, "registration/sign_up_user.html", {"form": form})
+
+    def post(self, request):
+        form = SignUpUser(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect("login")  # Redirection vers la page de connexion
+        return render(request, "registration/sign_up_user.html", {"form": form})
 
 
 def add_lodgement(request):

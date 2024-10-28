@@ -6,9 +6,10 @@ from .models import House, Paid, Payment, Rental
 
 
 class HouseForm(forms.ModelForm):
+
     class Meta:
         model = House
-        fields = "__all__"
+        fields = ["quarter", "price", "nbrRooms", "address"]
 
 
 class FormLocation(forms.ModelForm):
