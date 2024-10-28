@@ -10,7 +10,6 @@ urlpatterns = [
     path("les-maisons/details/<pk>", DetailsHouse.as_view(), name="details"),
     path("les-maisons/details/<pk>/modifier", UpdateHouse.as_view(), name="update"),
     path("ajouter-maison/", views.add_lodgement, name="add_house"),
-    path("ajouter-type/", views.add_type_house, name="add_type_house"),
     path("ajouter-location/", views.add_location, name="add_location"),
     path("inscription/", views.signing_up, name="sign_up_user"),
     path("login/", views.signing_in, name="sign_in_user"),

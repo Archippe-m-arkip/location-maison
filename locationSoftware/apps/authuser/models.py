@@ -1,5 +1,6 @@
 from enum import unique
 
+from apps.core.models import BaseModel
 from django.contrib.auth.base_user import AbstractBaseUser
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, UserManager
 from django.db import models
@@ -37,7 +38,7 @@ class CustomUserManager(UserManager):
         return user
 
 
-class User(AbstractBaseUser, PermissionsMixin):
+class User(AbstractBaseUser, PermissionsMixin, BaseModel):
     email = models.EmailField(blank=False, default="", unique=True)
     name = models.CharField(max_length=50, blank=False, default="", unique=True)
     phone = models.IntegerField(blank=True, null=True)

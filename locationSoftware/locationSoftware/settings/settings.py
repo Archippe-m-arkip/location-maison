@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "apps.app_location",
     "apps.authuser",
+    "apps.core",
 ]
 
 AUTH_USER_MODEL = "authuser.User"

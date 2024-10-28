@@ -1,8 +1,10 @@
 from django.contrib.auth import authenticate, login
+from django.contrib.auth.views import LoginView
 
 # from django.core.signals import request_started
 # from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
+from django.urls import reverse_lazy
 from django.views import View
 from django.views.generic import TemplateView
 from django.views.generic.detail import DetailView
@@ -14,21 +16,30 @@ from .models import House
 
 
 class Home(TemplateView):
-    template_name = "app_location/index.html"
+    template_name = "appLocation/index.html"
 
 
 class ShowAllHouses(ListView):
     model = House
+    template_name = "appLocation/lodgement_list.html"
 
 
 class DetailsHouse(DetailView):
     model = House
+    template_name = "appLocation/lodgement_detail.html"
+    house = House()
+    context_object_name = "theHouse"
 
 
 class UpdateHouse(UpdateView):
     model = House
     fields = "__all__"
     success_url = ""
+
+
+class UserLogin(LoginView):
+    template_name = "registration/sign_in_user.html"
+    success_url = reverse_lazy("home")
 
 
 def add_lodgement(request):
@@ -39,7 +50,7 @@ def add_lodgement(request):
             return redirect("houses")
     else:
         form = HouseForm()
-    return render(request, "app_location/add_house.html", {"form": form})
+    return render(request, "appLocation/add_house.html", {"form": form})
 
 
 def add_location(request):
@@ -50,7 +61,8 @@ def add_location(request):
             return redirect("houses")
         else:
             form = FormLocation()
-        return render(request, "app_location/add_location.html", {"form": form})
+            template_name = "appLocation/add_location.html"
+        return render(request, template_name, {"form": form})
 
 
 def signing_up(request):
@@ -65,10 +77,8 @@ def signing_up(request):
             return redirect("houses")  # Redirection après inscription
     else:
         form = SignUpUser()
-    return render(
-        request, "app_location/registration/sign_up_user.html", {"form": form}
-    )
+    return render(request, "appLocation/registration/sign_up_user.html", {"form": form})
 
 
 def signing_in(request):
-    return render(request, "app_location/registration/sign_in_user.html")
+    return render(request, "appLocation/registration/sign_in_user.html")
