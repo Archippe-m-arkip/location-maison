@@ -9,7 +9,7 @@ class HouseForm(forms.ModelForm):
 
     class Meta:
         model = House
-        fields = ["quarter", "price", "nbrRooms", "address"]
+        exclude = ["created_by", "deleted_at"]
 
 
 class FormLocation(forms.ModelForm):
