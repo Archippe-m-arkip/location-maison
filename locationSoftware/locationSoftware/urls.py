@@ -16,12 +16,14 @@ Including another URLconf
 """
 
 from django.contrib import admin
-from django.urls import include, path
+from django.urls import include, path, re_path
 
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("accounts/", include("django.contrib.auth.urls")),
     path("", include("apps.app_location.urls")),
     path("apis/", include("apps.api.urls")),
+    # re_path(r"^v1/maisons", include("apps.core.versionning", namespace="v1")),
+    # re_path(r"^v2/maisons", include("apps.api.urls", namespace="v2")),
     path("api-auth/", include("rest_framework.urls")),
 ]

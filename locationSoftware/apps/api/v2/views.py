@@ -11,11 +11,6 @@ from rest_framework.views import APIView
 
 from .serializers import HouseDeserializer, HouseSerializer
 
-house_data = House.objects.all()
-serializer = HouseSerializer(house_data, many=True)
-serializer_data = JSONRenderer().render(serializer.data)
-print(serializer_data)
-
 
 @csrf_exempt
 def create_house(request):
@@ -30,5 +25,9 @@ def create_house(request):
         return JsonResponse(serializer.errors, status=400)
 
 
-# APIView est bcp plus flexible et n'est utiliseE que lorsqu'on a besoin de definir ses propres codes
-# Dans la maniere de gerer les requetes. get, post, put patch
+class HouseListView_v2(generics.ListCreateAPIView):
+    queryset = House.objects.all()
+    serializer_class = HouseSerializer
+
+    def get_queryset(self):
+        return House.objects.filter(type_house="appart")

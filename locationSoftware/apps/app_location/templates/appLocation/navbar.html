@@ -13,15 +13,24 @@
         </div>
         <div>
              <div style="display:flex; align-items: center; gap:20px">
-                    <h3>
-                         {% if user.is_authenticated == True %}
 
-                                {{ user.username }}
+                {% if user.is_authenticated == True %}
+                      <h3>
+                          {{ user.name }}
+                     </h3>
 
-                        {% endif %}
-                    </h3>
-                    <p>Logout</p>
-                </div>
+
+                     <form action="{% url 'logout' %}" method="post">
+                         {% csrf_token %}
+                         <input type="submit" value="Logout">
+                     </form>
+                    {% else %}
+                    <form action="{% url 'login' %}" method="post">
+                         {% csrf_token %}
+                         <input type="submit" value="Login">
+                     </form>
+                {% endif %}
+             </div>
         </div>
     </div>
 </nav>

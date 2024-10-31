@@ -57,9 +57,10 @@ class UpdateRental(UpdateView):
     success_url = "/les-maisons/"
 
 
-class UserLoginView(LoginView):
-    template_name = "registration/sign_in_user.html"
-    success_url = reverse_lazy("home")
+# classes de la gestion des utilisateurs
+# class UserLoginView(LoginView):
+#     template_name = "appLocation/registration/sign_in_user.html"
+#     success_url = reverse_lazy("home")
 
 
 class UserLogoutView(LogoutView):
@@ -69,14 +70,19 @@ class UserLogoutView(LogoutView):
 class RegisterView(View):
     def get(self, request):
         form = SignUpUser()
-        return render(request, "registration/sign_up_user.html", {"form": form})
+        return render(
+            request, "appLocation/registration/sign_up_user.html", {"form": form}
+        )
 
     def post(self, request):
         form = SignUpUser(request.POST)
         if form.is_valid():
             form.save()
+            print("bien enregistreE")
             return redirect("login")  # Redirection vers la page de connexion
-        return render(request, "registration/sign_up_user.html", {"form": form})
+        return render(
+            request, "appLocation/registration/sign_up_user.html", {"form": form}
+        )
 
 
 def add_lodgement(request):
@@ -117,5 +123,6 @@ def signing_up(request):
     return render(request, "appLocation/registration/sign_up_user.html", {"form": form})
 
 
-def signing_in(request):
-    return render(request, "appLocation/registration/sign_in_user.html")
+#
+# def signing_in(request):
+#     return render(request, "appLocation/registration/sign_in_user.html")

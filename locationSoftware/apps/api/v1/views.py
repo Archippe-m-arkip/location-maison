@@ -1,20 +1,13 @@
 from apps.app_location.models import House
 from django.http import JsonResponse
-from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
-from rest_framework import generics, status
+from rest_framework import generics
 from rest_framework.parsers import JSONParser
-from rest_framework.renderers import JSONRenderer
-from rest_framework.response import Response
-from rest_framework.status import HTTP_200_OK
-from rest_framework.views import APIView
+from rest_framework.permissions import IsAuthenticated
 
 from .serializers import HouseDeserializer, HouseSerializer
 
-house_data = House.objects.all()
-serializer = HouseSerializer(house_data, many=True)
-serializer_data = JSONRenderer().render(serializer.data)
-print(serializer_data)
+#
 
 
 @csrf_exempt
@@ -30,5 +23,10 @@ def create_house(request):
         return JsonResponse(serializer.errors, status=400)
 
 
-# APIView est bcp plus flexible et n'est utiliseE que lorsqu'on a besoin de definir ses propres codes
-# Dans la maniere de gerer les requetes. get, post, put patch
+#
+
+
+class HouseListView_v1(generics.ListCreateAPIView):
+    permission_classes = [IsAuthenticated]
+    queryset = House.objects.all()
+    serializer_class = HouseSerializer
