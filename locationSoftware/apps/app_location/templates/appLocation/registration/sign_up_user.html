@@ -6,9 +6,14 @@
 
     {% block content %}
         <h1>S'inscrire</h1>
-        <form method="post" action="" style="padding: 0px 20px; space-y:5px">
+        <form method="post" action="" style="padding: 0px 30px; space-y:5px">
             {% csrf_token %}
             {{ form.as_p }}
+              <button type="reset">
+                  <a href="{% url 'home' %}">
+                 Annuler
+                 </a>
+              </button>
             <button type="submit">S'incrire</button>
         </form>
         <p>Vous etes deja inscrit ? <a href="{% url 'login' %}">Se connecter</a></p>

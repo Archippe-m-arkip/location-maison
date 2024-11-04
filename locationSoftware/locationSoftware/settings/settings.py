@@ -10,12 +10,15 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
+import os.path
 from pathlib import Path
 
 from django.conf.global_settings import (
     AUTH_USER_MODEL,
     LOGIN_REDIRECT_URL,
     LOGOUT_REDIRECT_URL,
+    STATIC_ROOT,
+    STATICFILES_DIRS,
 )
 from django_filters.conf import DEFAULTS
 
@@ -31,7 +34,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = []  # mettre l'adresse ip du serveur ici en chaines des caracteres
 
 
 # Application definition
@@ -49,6 +52,8 @@ INSTALLED_APPS = [
     "apps.core",
     "rest_framework",
     "rest_framework.authtoken",
+    "django_extensions",
+    "widget_tweaks",
 ]
 
 AUTH_USER_MODEL = "authuser.User"
@@ -143,8 +148,15 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
-STATIC_URL = "static/"
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+
+STATIC_URL = "/static/"
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "apps/app_location/static/appLocation"),
+    os.path.join(BASE_DIR, "static"),
+]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field

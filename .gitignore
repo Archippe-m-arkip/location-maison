@@ -1,8 +1,10 @@
 localsettings.py
 .env
+.idea
 *.log
 *.pot
 *.pyc
 __pycache__
 media
 *.sqlite3
+static/appLocation/images

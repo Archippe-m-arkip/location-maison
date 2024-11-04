@@ -6,7 +6,7 @@ from rest_framework.urls import app_name
 # app_name = 'api'
 
 urlpatterns = [
-    path("api-auth/", include("rest_framework.urls", namespace="rest_framework")),
+    path("api-auth/", include("rest_framework.urls")),
     path("v1/", include("apps.api.v1.urls")),
     path("v2/", include("apps.api.v2.urls")),
 ]

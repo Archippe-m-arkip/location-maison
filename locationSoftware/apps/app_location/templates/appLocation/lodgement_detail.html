@@ -5,41 +5,79 @@
     {% endblock %}
     {% block content %}
     {% include 'appLocation/navbar.html' %}
-       <ul>
-            <div style="display: flex; justify-content:space-between; padding-right:50px;">
-                <h1>Details house</h1>
 
-           <ul>
-                <i>Maison numero</i>
-                <li>Nombre des chambres: {{theHouse.nbrRooms}}</li>
-                <li>Superficie de :  {{theHouse.superficies}}m<sup>2</sup></li>
-                <li>Quartier: {{theHouse.quarter}}</li>
-                <li>Adresse: {{theHouse.address}}</li><br>
-                <li>Description: {{theHouse.description}}</li>
-                <br>
-                <li>
-                    <a href="{% url 'houses' %}"  style="padding-right:10px">Retourner en arriere</a>
-                    {% if user.is_authenticated %}
-                          {% if user.is_superuser %}
-                            <a href="/les-maisons/modifier/{{theHouse.id}} " style="padding-right:10px;padding-left:10px;color: green">Modifier</a>
-                            {% endif %}
+ {% load static %}
+<div class="container px-4 px-lg-5">
+            <!-- Heading Row-->
+            <div class="row gx-4 gx-lg-5 align-items-center my-5">
+                <div class="img-fuid  col-lg-7 ">
+                    <img class="img-fluid  w-50 d-block mx-auto rounded mb-4 mb-lg-0" src="{% static '/images/building.jpeg' %}" />
+                </div>
+                <div class="col-lg-5 bg-white card border-0 shadow-sm py-5">
+                    <h3 class="fw-semibold pb-2">Maison de type <span class="text-primary">{{theHouse.type_house}}</span></h3>
 
-                            <form action="" method="post">
-                                <input type="submit" value=" Réserver cette maison">
-                            </form>
+                    <p>Nombre des chambres : {{theHouse.nbrRooms}}</p>
+                    <p>Superficie de :  {{theHouse.superficies}}m<sup>2</sup></p>
+                    <p>Quartier : {{theHouse.quarter}}</p>
+                    <p>Adresse : {{theHouse.address}}</p>
+                    <p>Description : {{theHouse.description}}</p>
+                   <div class="d-flex gap-2">
+                      {% if user.is_authenticated %}
+                       <form action="" method="post">
+                           {% csrf_token %}
+                           <input type="submit" class="btn btn-primary" value="Louer cette maison">
+                       </form>
                         {% if user.is_superuser %}
-                        <form action="{% url 'delete'  theHouse.id %}" method="post" style="display:inline;">
-                            {% csrf_token %}
-                            <button type="submit" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette maison ?');">Supprimer</button>
-                        </form>
+                            <a href="{% url 'update' theHouse.id %} " class="btn btn-light text-success">Modifier</a>
+                        {% endif %}
+
+
+                        {% if user.is_superuser %}
+                            <form action="{% url 'delete'  theHouse.id %}" method="post" style="display:inline;">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-danger" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette maison ?');">Supprimer</button>
+                            </form>
                         {% endif %}
                     {% else %}
-                        <p>Vous devez être connecté pour réserver cette maison. <a href="{% url 'login' %}">Se connecter</a></p>
+                        <p class="card p-1 px-2 border-1 border-danger border-opacity-25 bg-danger bg-opacity-10 text-gray small text-opacity-10 w-100">Vous devez être connecté pour réserver cette maison. <a href="{% url 'login' %}?next={{ request.path }}">Se connecter</a></p>
                     {% endif %}
-                </li>
-           </ul>
 
-            <br>
-            <br>
-        </ul>
+                   </div>
+                </div>
+            </div>
+            <!-- Call to Action-->
+            <div class="card text-white bg-secondary my-5 py-4 text-center">
+                <div class="card-body"><p class="text-white m-0">This call to action card is a great place to showcase some important information or display a clever tagline!</p></div>
+            </div>
+            <!-- Content Row-->
+            <div class="row gx-4 gx-lg-5">
+                <div class="col-md-4 mb-5">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h2 class="card-title">Card One</h2>
+                            <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Rem magni quas ex numquam, maxime minus quam molestias corporis quod, ea minima accusamus.</p>
+                        </div>
+                        <div class="card-footer"><a class="btn btn-primary btn-sm" href="#!">More Info</a></div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-5">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h2 class="card-title">Card Two</h2>
+                            <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quod tenetur ex natus at dolorem enim! Nesciunt pariatur voluptatem sunt quam eaque, vel, non in id dolore voluptates quos eligendi labore.</p>
+                        </div>
+                        <div class="card-footer"><a class="btn btn-primary btn-sm" href="#!">More Info</a></div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-5">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h2 class="card-title">Card Three</h2>
+                            <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Rem magni quas ex numquam, maxime minus quam molestias corporis quod, ea minima accusamus.</p>
+                        </div>
+                        <div class="card-footer"><a class="btn btn-primary btn-sm" href="#!">More Info</a></div>
+                    </div>
+                </div>
+            </div>
+</div>
     {% endblock %}

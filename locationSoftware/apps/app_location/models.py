@@ -6,6 +6,7 @@ from django.db import models
 
 class House(BaseModel):
     id = models.AutoField(primary_key=True)
+    # image = models.ImageField(null=True)
     nbrRooms = models.IntegerField()
     type_house = models.CharField(null=True)
     quarter = models.CharField(null=False)

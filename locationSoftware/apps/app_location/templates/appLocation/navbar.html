@@ -1,36 +1,34 @@
-<nav>
-    <div style="display:flex; justify-content:space-between">
-        <div>
-            <h2>Logo</h2>
+{% load widget_tweaks %}
 
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-5x sticky-top">
+    <div class="container px-5">
+        <h1><a class="navbar-brand fs-3 fw-bold" href="{% url 'home' %}">Rent-House</a></h1>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                <li class="nav-item"><a class="nav-link {% if request.path == '/' %}active{% endif %}" aria-current="page" href="{% url 'home' %}">Accueil</a></li>
+                <li class="nav-item"><a class="nav-link {% if request.path == '/les-maisons/' %}active{% endif %}" href="{% url 'houses' %}">Maisons</a></li>
+                <li class="nav-item"><a class="nav-link {% if request.path == '/mes-locations' %}active{% endif %}" href="  ">Mes reservations</a></li>
+
+                <div style="display:flex; align-items: center; gap:20px">
+
+                    {% if user.is_authenticated == True %}
+                        <h2 class="primary">
+                            {{ user.name }}
+                        </h2>
+                        <form class="" action="{% url 'logout' %}?next={{ request.path }}" method="post">
+                            {% csrf_token %}
+                            <input type="submit" class="btn bg-danger bg-opacity-75 text-white px-3 ms-5" value="Logout">
+                        </form>
+                    {% else %}
+                        <form action="{% url 'login' %}?next={{ request.path }}" method="post">
+                            {% csrf_token %}
+                            <input type="submit" class="btn bg-primary bg-opacity-75 fw-500 text-white px-3 ms-5" value="Login">
+                        </form>
+            {% endif %}
         </div>
-        <div>
-            <ul style="display: flex; width:auto; gap: 20px;">
-                <li><a href="{% url 'home' %}">Accueil</a></li>
-                <li><a href="{% url 'houses' %}">Voir les maisons</a></li>
-
             </ul>
         </div>
-        <div>
-             <div style="display:flex; align-items: center; gap:20px">
 
-                {% if user.is_authenticated == True %}
-                      <h3>
-                          {{ user.name }}
-                     </h3>
-
-
-                     <form action="{% url 'logout' %}" method="post">
-                         {% csrf_token %}
-                         <input type="submit" value="Logout">
-                     </form>
-                    {% else %}
-                    <form action="{% url 'login' %}" method="post">
-                         {% csrf_token %}
-                         <input type="submit" value="Login">
-                     </form>
-                {% endif %}
-             </div>
-        </div>
     </div>
 </nav>

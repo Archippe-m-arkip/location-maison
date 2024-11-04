@@ -4,10 +4,13 @@
     Toutes les maisons
 {% endblock %}
  {% block content %}
+        {% include 'appLocation/navbar.html' %}
+
     <h1>Toutes les maisons</h1>
     <ul>
 
         {% for object in object_list %}
+
             <li><strong>Maison </strong></li>
             <li>Type de la maison : {{object.type_house}}</li>
             <li>Nombre des chambres : {{object.nbrRooms}}</li>

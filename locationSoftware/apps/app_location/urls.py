@@ -1,16 +1,9 @@
+from apps.authuser.views import RegisterView, UserLoginView, UserLogoutView
 from django.urls import path
 from rest_framework.authtoken.views import obtain_auth_token
 
 from . import views
-from .views import (
-    DeleteHouse,
-    DetailsHouse,
-    Home,
-    RegisterView,
-    ShowAllHouses,
-    UpdateHouse,
-    UserLogoutView,
-)
+from .views import DeleteHouse, DetailsHouse, Home, ShowAllHouses, UpdateHouse
 
 urlpatterns = [
     path("", Home.as_view(), name="home"),
@@ -24,7 +17,7 @@ urlpatterns = [
     path("inscription/", RegisterView.as_view(), name="sign_up_user"),
     path(
         "connexion/",
-        obtain_auth_token,
+        UserLoginView.as_view(),
         name="login",
     ),
     path("deconnexion/", UserLogoutView.as_view(), name="logout"),

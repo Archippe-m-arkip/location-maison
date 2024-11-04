@@ -1,4 +1,5 @@
 from django.contrib.auth import authenticate, login
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import LoginView, LogoutView
 from django.http import Http404
 from django.shortcuts import get_object_or_404, redirect, render
@@ -57,32 +58,32 @@ class UpdateRental(UpdateView):
     success_url = "/les-maisons/"
 
 
-# classes de la gestion des utilisateurs
+# # classes de la gestion des utilisateurs
 # class UserLoginView(LoginView):
 #     template_name = "appLocation/registration/sign_in_user.html"
 #     success_url = reverse_lazy("home")
-
-
-class UserLogoutView(LogoutView):
-    next_page = reverse_lazy("home")
-
-
-class RegisterView(View):
-    def get(self, request):
-        form = SignUpUser()
-        return render(
-            request, "appLocation/registration/sign_up_user.html", {"form": form}
-        )
-
-    def post(self, request):
-        form = SignUpUser(request.POST)
-        if form.is_valid():
-            form.save()
-            print("bien enregistreE")
-            return redirect("login")  # Redirection vers la page de connexion
-        return render(
-            request, "appLocation/registration/sign_up_user.html", {"form": form}
-        )
+#
+#
+# class UserLogoutView(LogoutView):
+#     next_page = reverse_lazy("home")
+#
+#
+# class RegisterView(View):
+#     def get(self, request):
+#         form = SignUpUser()
+#         return render(
+#             request, "appLocation/registration/sign_up_user.html", {"form": form}
+#         )
+#
+#     def post(self, request):
+#         form = SignUpUser(request.POST)
+#         if form.is_valid():
+#             form.save()
+#             print("bien enregistreE")
+#             return redirect("login")  # Redirection vers la page de connexion
+#         return render(
+#             request, "appLocation/registration/sign_up_user.html", {"form": form}
+#         )
 
 
 def add_lodgement(request):

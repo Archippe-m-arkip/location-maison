@@ -7,8 +7,6 @@ from rest_framework.permissions import IsAuthenticated
 
 from .serializers import HouseDeserializer, HouseSerializer
 
-#
-
 
 @csrf_exempt
 def create_house(request):

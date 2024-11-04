@@ -55,7 +55,7 @@ pathspec==0.12.1
     # via black
 pbr==6.1.0
     # via stevedore
-pip-tools==7.4.1
+#pip-tools==7.4.1
     # via -r requirements.in
 platformdirs==4.3.6
     # via black
