@@ -3,7 +3,7 @@ from django.contrib.auth.views import LoginView, LogoutView
 from django.http import request
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
-from django.views.generic import View
+from django.views.generic.edit import CreateView
 
 # Create your views here.
 
@@ -18,19 +18,24 @@ class UserLogoutView(LogoutView):
     next_page = reverse_lazy("home")
 
 
-class RegisterView(View):
-    def get(self, request):
-        form = SignUpUser()
-        return render(
-            request, "appLocation/registration/sign_up_user.html", {"form": form}
-        )
+class RegisterView(CreateView):
+    form_class = SignUpUser
+    template_name = "appLocation/registration/sign_up_user.html"
 
-    def post(self, request):
-        form = SignUpUser(request.POST)
-        if form.is_valid():
-            form.save()
-            print("bien enregistreE")
-            return redirect("login")  # Redirection vers la page de connexion
-        return render(
-            request, "appLocation/registration/sign_up_user.html", {"form": form}
-        )
+
+# class RegisterView(View):
+#     def get(self, request):
+#         form = SignUpUser()
+#         return render(
+#             request, "appLocation/registration/sign_up_user.html", {"form": form}
+#         )
+
+#     def post(self, request):
+#         form = SignUpUser(request.POST)
+#         if form.is_valid():
+#             form.save()
+#             print("bien enregistreE")
+#             return redirect("login")  # Redirection vers la page de connexion
+#         return render(
+#             request, "appLocation/registration/sign_up_user.html", {"form": form}
+#         )

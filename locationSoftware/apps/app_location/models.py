@@ -16,6 +16,20 @@ class House(BaseModel):
     price = models.DecimalField(max_digits=10, decimal_places=2)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
+    @property
+    def is_available(self):
+        # houses =[]
+        # for rental in Rental.objects.all():
+        #     houses.append(rental.house)
+
+        if self in [rental.house for rental in Rental.objects.all()]:
+            return False
+        return True
+
+        # if self in houses:
+        #     return False
+        # return True
+
 
 class Rental(BaseModel):
     id = models.AutoField(primary_key=True)
@@ -23,6 +37,7 @@ class Rental(BaseModel):
     date_begin = models.DateTimeField(null=False, blank=False)
     date_end = models.DateTimeField(null=False, blank=False)
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="renter")
+    house = models.ForeignKey(House, on_delete=models.CASCADE, related_name="rented")
 
 
 class Payment(BaseModel):

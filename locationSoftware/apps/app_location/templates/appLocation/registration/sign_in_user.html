@@ -22,8 +22,18 @@
 
             {% load widget_tweaks %}
 
+
             <form action="" method="post" class="h-auto">
               {% csrf_token %}
+
+              {% if form.non_field_errors %}
+              <div class="alert alert-danger">
+                  {% for error in form.non_field_errors %}
+                    <p>{{ error }}</p>
+                  {% endfor %}
+
+              </div>
+            {% endif %}
 
                 <div class="col-12">
                   <div class="form-floating mb-3 h-auto">
@@ -35,6 +45,7 @@
                 <div class="col-12">
                   <div class="form-floating mb-3 h-auto">
                     {% render_field form.password type="password"  id="password" class+="form-control"  placeholder="Password" %}
+
                     <label for="password" class="form-label">Password</label>
                   </div>
                 </div>

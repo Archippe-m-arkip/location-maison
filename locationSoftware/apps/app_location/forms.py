@@ -12,10 +12,10 @@ class HouseForm(forms.ModelForm):
         exclude = ["created_by", "deleted_at"]
 
 
-class FormLocation(forms.ModelForm):
+class RentalForm(forms.ModelForm):
     class Meta:
         model = Rental
-        fields = "__all__"
+        fields = ["house", "user", "date_begin", "date_end"]
 
 
 class SignUpUser(UserCreationForm):

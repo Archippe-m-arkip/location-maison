@@ -1,15 +1,17 @@
+from datetime import timezone
+
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.views import LoginView, LogoutView
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import Http404
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
-from django.views.generic import DeleteView, TemplateView, View
+from django.views.generic import CreateView, DeleteView, TemplateView, View
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import UpdateView
 from django.views.generic.list import ListView
 
-from .forms import FormLocation, HouseForm, SignUpUser
+from .forms import HouseForm, RentalForm, SignUpUser
 from .models import House, Rental
 
 
@@ -18,6 +20,7 @@ class Home(TemplateView):
 
 
 class ShowAllHouses(ListView):
+    paginate_by = 3
     model = House
     template_name = "appLocation/lodgement_list.html"
 
@@ -58,34 +61,6 @@ class UpdateRental(UpdateView):
     success_url = "/les-maisons/"
 
 
-# # classes de la gestion des utilisateurs
-# class UserLoginView(LoginView):
-#     template_name = "appLocation/registration/sign_in_user.html"
-#     success_url = reverse_lazy("home")
-#
-#
-# class UserLogoutView(LogoutView):
-#     next_page = reverse_lazy("home")
-#
-#
-# class RegisterView(View):
-#     def get(self, request):
-#         form = SignUpUser()
-#         return render(
-#             request, "appLocation/registration/sign_up_user.html", {"form": form}
-#         )
-#
-#     def post(self, request):
-#         form = SignUpUser(request.POST)
-#         if form.is_valid():
-#             form.save()
-#             print("bien enregistreE")
-#             return redirect("login")  # Redirection vers la page de connexion
-#         return render(
-#             request, "appLocation/registration/sign_up_user.html", {"form": form}
-#         )
-
-
 def add_lodgement(request):
     if request.method == "POST":
         form = HouseForm(request.POST)
@@ -97,16 +72,31 @@ def add_lodgement(request):
     return render(request, "appLocation/add_house.html", {"form": form})
 
 
-def add_location(request):
-    if request.method == "POST":
-        form = FormLocation(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect("houses")
-        else:
-            form = FormLocation()
-            template_name = "appLocation/add_location.html"
-        return render(request, template_name, {"form": form})
+class CreateRental(LoginRequiredMixin, CreateView):
+    form_class = RentalForm
+    template_name = "appLocation/add_location.html"
+    success_url = reverse_lazy("houses")
+
+    def form_valid(self, form):
+        house = House.objects.get(id=self.kwargs["house"])
+        form.instance.user = self.request.user
+        form.instance.house = house
+        form.instance.date_begin = timezone.now()
+
+        return super().form_valid(form)
+
+
+# def add_location(request):
+#     if request.method == "POST":
+#         form = FormLocation(request.POST)
+#         if form.is_valid():
+#             form.save()
+#             return redirect("houses")
+#         else:
+#             form = FormLocation()
+#             template_name = "appLocation/add_location.html"
+#         return render(request, template_name, {"form": form})
+#
 
 
 def signing_up(request):
@@ -124,6 +114,5 @@ def signing_up(request):
     return render(request, "appLocation/registration/sign_up_user.html", {"form": form})
 
 
-#
 # def signing_in(request):
 #     return render(request, "appLocation/registration/sign_in_user.html")

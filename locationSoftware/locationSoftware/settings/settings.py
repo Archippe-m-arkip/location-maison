@@ -17,6 +17,8 @@ from django.conf.global_settings import (
     AUTH_USER_MODEL,
     LOGIN_REDIRECT_URL,
     LOGOUT_REDIRECT_URL,
+    MEDIA_ROOT,
+    MEDIA_URL,
     STATIC_ROOT,
     STATICFILES_DIRS,
 )
@@ -94,6 +96,7 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+                "utils.context_processors.rent_context",
             ],
         },
     },
@@ -158,10 +161,16 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]
 
+
+MEDIA_URL = "/media/"
+MEDIA_ROOT = BASE_DIR / "media"
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+
 try:
     from .localsettings import *
 except ImportError:

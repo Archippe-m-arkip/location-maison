@@ -6,27 +6,28 @@
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                <li class="nav-item"><a class="nav-link {% if request.path == '/' %}active{% endif %}" aria-current="page" href="{% url 'home' %}">Accueil</a></li>
+                <li class="nav-item"><a class="nav-link {% if request.path == '/' %} active{% endif %}" aria-current="page" href="{% url 'home' %}">Accueil</a></li>
                 <li class="nav-item"><a class="nav-link {% if request.path == '/les-maisons/' %}active{% endif %}" href="{% url 'houses' %}">Maisons</a></li>
-                <li class="nav-item"><a class="nav-link {% if request.path == '/mes-locations' %}active{% endif %}" href="  ">Mes reservations</a></li>
+                <li class="nav-item"><a class="nav-link {% if request.path == '/mes-locations' %}active{% endif %}" href="">Mes reservations</a></li>
+                <li class="nav-item"><a class="nav-link {% if request.path == '/listes-locations' %}active{% endif %}" href="">Activites</a></li>
 
-                <div style="display:flex; align-items: center; gap:20px">
+                <div class="d-flex ps-4 align-items-center justify-content-evenly " >
 
                     {% if user.is_authenticated == True %}
-                        <h2 class="primary">
+                        <h3 class="text-warning my-auto">
                             {{ user.name }}
-                        </h2>
+                        </h3>
                         <form class="" action="{% url 'logout' %}?next={{ request.path }}" method="post">
                             {% csrf_token %}
-                            <input type="submit" class="btn bg-danger bg-opacity-75 text-white px-3 ms-5" value="Logout">
+                            <input type="submit" class="btn bg-danger bg-opacity-75 text-white px-3 ms-3" value="Deconnexion">
                         </form>
                     {% else %}
                         <form action="{% url 'login' %}?next={{ request.path }}" method="post">
                             {% csrf_token %}
-                            <input type="submit" class="btn bg-primary bg-opacity-75 fw-500 text-white px-3 ms-5" value="Login">
+                            <input type="submit" class="btn bg-primary bg-opacity-75 fw-500 text-white px-3 ms-3" value="Se connecter">
                         </form>
-            {% endif %}
-        </div>
+                    {% endif %}
+                </div>
             </ul>
         </div>
 
