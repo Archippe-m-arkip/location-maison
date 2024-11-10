@@ -3,24 +3,25 @@
     {% block title %}
         Detail maison
     {% endblock %}
-    {% block content %}
+{% block content %}
     {% include 'appLocation/navbar.html' %}
 
- {% load static %}
+    {% load static %}
 <div class="container px-4 px-lg-5">
             <!-- Heading Row-->
             <div class="row gx-4 gx-lg-5 align-items-center my-5">
                 <div class="img-fuid  col-lg-7 ">
-                    <img class="img-fluid  w-50 d-block mx-auto rounded mb-4 mb-lg-0" src="{% static '/images/building.jpeg' %}" />
+                    <img class="img-fluid  w-50 d-block mx-auto rounded mb-4 mb-lg-0" src="{{ theHouse.image.url }}" />
                 </div>
                 <div class="col-lg-5 bg-white card border-0 shadow-sm py-5">
-                    <div class="d-flex w-100 ">
+                    <div class=" w-100 ">
                         <p class="fw-semibold fs-3 pb-3">Maison de type <span class="text-primary">{{theHouse.type_house}}</span></p>
-                         {% if object.is_available %}
+                         {% if theHouse.availability == True %}
                             <p class="badge bg-success bg-opacity-75 bg-gradient rounded-pill mb-2 m-auto ">Disponible</p>
 
                         {% else %}
-                            <div class="badge bg-danger  bg-opacity-75 bg-gradient rounded-pill mb-2 m-auto">Non disponible</div>
+                            <div class="badge bg-danger  bg-opacity-50 bg-gradient rounded-pill mb-2 m-auto me-2">Non disponible</div>
+                            <div class="badge bg-black bg-opacity-10  bg-gradient  rounded-pill mb-2 m-auto text-black text-opacity-50">Libre le {{ rent.date_rent }}</div>
 
                         {% endif %}
                     </div>
@@ -35,14 +36,18 @@
 
                    <div class="d-flex gap-2">
                       {% if user.is_authenticated %}
-                       <form action="{% url 'add_location'  %}" method="post">
-                           {% csrf_token %}
-                           <button class="btn btn-primary" type="submit">Louer cette maison</button>
-                       </form>
+
+                            {% if theHouse.availability == True %}
+
+                           <a href="{% url 'add_location' theHouse.id user.id %}"  class="btn btn-primary" type="submit">Louer cette maison</a>
+                            {% else %}
+                           <a href=""  class="  btn   bg-black bg-opacity-10 text-black text-opacity-25  cursor-not-allowed"  type="submit">Louer cette maison</a>
+
+                            {% endif %}
 
 
                         {% if user.is_superuser %}
-                            <a href="{% url 'update' theHouse.id %} " class="btn btn-light text-success">Modifier</a>
+                            <a href="{% url 'update' theHouse.id  %} " class="btn btn-light text-success">Modifier</a>
                         {% endif %}
 
 

@@ -8,8 +8,8 @@
             <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                 <li class="nav-item"><a class="nav-link {% if request.path == '/' %} active{% endif %}" aria-current="page" href="{% url 'home' %}">Accueil</a></li>
                 <li class="nav-item"><a class="nav-link {% if request.path == '/les-maisons/' %}active{% endif %}" href="{% url 'houses' %}">Maisons</a></li>
-                <li class="nav-item"><a class="nav-link {% if request.path == '/mes-locations' %}active{% endif %}" href="">Mes reservations</a></li>
-                <li class="nav-item"><a class="nav-link {% if request.path == '/listes-locations' %}active{% endif %}" href="">Activites</a></li>
+                <li class="nav-item"><a class="nav-link {% if request.path == '/mes-reservations/' %}active{% endif %}" href="{% url 'mes-reservations' %}">Mes reservations</a></li>
+                <li class="nav-item"><a class="nav-link {% if request.path == '/activites/' %}active{% endif %}" href="{% url 'activities' %}">Activites</a></li>
 
                 <div class="d-flex ps-4 align-items-center justify-content-evenly " >
 

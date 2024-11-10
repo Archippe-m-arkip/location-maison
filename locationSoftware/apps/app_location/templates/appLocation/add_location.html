@@ -17,41 +17,47 @@
 
                 <form action="" method="post" class="h-auto">
                   {% csrf_token %}
-
-                  {% if form.non_field_errors %}
-                  <div class="alert alert-danger">
-                      {% for error in form.non_field_errors %}
-                        <p>{{ error }}</p>
-                      {% endfor %}
-
-                  </div>
-                {% endif %}
-                    <div class="col-12">
-                      <div class="form-floating mb-3 h-auto">
-                            {% render_field form.user type="number"  id="user" class+="form-control"  placeholder="Password" value="" %}
-                        <label for="user" class="form-label bg-opacity-0">Username</label>
-                      </div>
-                    </div>
-                    <div class="col-12">
-                      <div class="form-floating mb-3 h-auto">
-                            {% render_field form.house type="number"  id="house" class+="form-control"  placeholder="Password" %}
-                        <label for="house" class="form-label">House</label>
-                      </div>
-                    </div>
-                    <div class="col-12">
-                      <div class="form-floating mb-3 h-auto">
-                            {% render_field form.date_begin type="datetime"  id="datebegin" class+="form-control"  placeholder="Password" %}
-                        <label for="datebegin" class="form-label">Date begin</label>
-                      </div>
-                    </div>
-
-                    <div class="col-12">
-                      <div class="d-grid d-flex my-3 w-100 gap-3 justify-content-between">
-                        <button class="btn btn-light border border-primary border-opacity-25 opacity-10 text-primary btn-md w-50" type="reset"><a href="{% url 'home' %}">Quitter</a></button>
-                        <button class="btn btn-primary btn-md w-50" type="submit">Enregistrer</button>
+                      {% if form.non_field_errors %}
+                      <div class="alert alert-danger">
+                          {% for error in form.non_field_errors %}
+                            <p>{{ error }}</p>
+                          {% endfor %}
 
                       </div>
-                    </div>
+                    {% endif %}
+                    <div class="col-12">
+                          <div class="form-floating mb-3 h-auto">
+                             {% render_field form.user value="form.user.value" id="house" class="form-control"   placeholder="House"  %}
+
+                            <label for="user" class="form-label bg-opacity-0">Username</label>
+                          </div>
+                        </div>
+                        <div class="col-12">
+                          <div class="form-floating mb-3 h-auto">
+                             {% render_field form.house  id="house" class="form-control"   placeholder="House"  %}
+                              <label for="house" class="form-label">House</label>
+                          </div>
+                        </div>
+                        <div class="col-12">
+                          <div class="form-floating mb-3 h-auto">
+                                {% render_field form.date_begin type="date"  id="datebegin" class+="form-control"  placeholder="Date begin" %}
+                            <label for="datebegin" class="form-label">Date begin</label>
+                          </div>
+                        </div>
+                        <div class="col-12">
+                          <div class="form-floating mb-3 h-auto">
+                                {% render_field form.date_end type="date"  id="date_end" class+="form-control"  value="" placeholder="Date end" %}
+                            <label for="date_end" class="form-label">Date end</label>
+                          </div>
+                        </div>
+
+                        <div class="col-12">
+                          <div class="d-grid d-flex my-3 w-100 gap-3 justify-content-between">
+                            <a href="{% url 'houses' %}?next={{ request.path }}" class="btn btn-light border border-primary border-opacity-25 opacity-10 text-primary btn-md w-50" >Quitter</a>
+                            <button class="btn btn-primary btn-md w-50" type="submit">Enregistrer</button>
+
+                          </div>
+                        </div>
                 </form>
               </div>
             </div>

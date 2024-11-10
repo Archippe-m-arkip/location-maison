@@ -1,15 +1,19 @@
-from datetime import timezone
+from calendar import month
+from pydoc import resolve
 
+from apps.authuser.models import User
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import Http404
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
+from django.utils import timezone
 from django.views.generic import CreateView, DeleteView, TemplateView, View
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import UpdateView
 from django.views.generic.list import ListView
+from urllib3 import request
 
 from .forms import HouseForm, RentalForm, SignUpUser
 from .models import House, Rental
@@ -25,7 +29,51 @@ class ShowAllHouses(ListView):
     template_name = "appLocation/lodgement_list.html"
 
     def get_queryset(self):
-        return House.objects.all()
+        available = self.request.GET
+        print(available)
+        if available:
+            available = self.request.GET.get("disponible")
+
+            if available == "true":
+                object_list = House.objects.all().exclude(availability=False)
+                return object_list
+
+            elif available == "false":
+                object_list = House.objects.filter(availability=False)
+                return object_list
+
+            elif available == "all":
+                object_list = House.objects.all()
+                return object_list
+
+            elif available == "soon":
+                not_available_houses = House.objects.filter(availability=False)
+                # today = timezone.now()
+                rent_object = Rental.objects.all().order_by("-date_end")
+
+                for rental in rent_object:
+                    for not_available in not_available_houses:
+                        if rental.house == not_available:
+                            obj_list = rent_object
+
+                return not_available_houses
+        else:
+            print("Noooooooone")
+            object_list = House.objects.all()
+
+            return object_list
+
+        object_list = House.objects.all()
+        return object_list
+
+
+class Activities(ListView):
+    model = House
+    template_name = "appLocation/activities.html"
+
+    def get_queryset(self):
+        object_list = House.objects.all()
+        return object_list
 
 
 class DetailsHouse(DetailView):
@@ -50,7 +98,17 @@ class DeleteHouse(ListView):
 class UpdateHouse(UpdateView):
     model = House
     template_name = "appLocation/lodgement_form.html"
-    fields = "__all__"
+    fields = [
+        "created_by",
+        "type_house",
+        "nbrRooms",
+        "image",
+        "quarter",
+        "superficies",
+        "address",
+        "description",
+        "user",
+    ]
     success_url = "/les-maisons/"
 
 
@@ -63,7 +121,7 @@ class UpdateRental(UpdateView):
 
 def add_lodgement(request):
     if request.method == "POST":
-        form = HouseForm(request.POST)
+        form = HouseForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
             return redirect("houses")
@@ -72,31 +130,34 @@ def add_lodgement(request):
     return render(request, "appLocation/add_house.html", {"form": form})
 
 
-class CreateRental(LoginRequiredMixin, CreateView):
+class CreateRental(CreateView):
+    model = Rental
     form_class = RentalForm
     template_name = "appLocation/add_location.html"
     success_url = reverse_lazy("houses")
 
+    def get_initial(self):
+        house_id = self.kwargs.get("house_id")
+        user_id = self.kwargs.get("user_id")
+        house = get_object_or_404(House, id=house_id)
+        user = get_object_or_404(User, id=user_id)
+        return {
+            "house": house,
+            "user": user,
+            "username_locator": self.request.user.username,
+        }
+
     def form_valid(self, form):
-        house = House.objects.get(id=self.kwargs["house"])
-        form.instance.user = self.request.user
-        form.instance.house = house
-        form.instance.date_begin = timezone.now()
-
+        house_id = self.kwargs.get("house_id")
+        house = get_object_or_404(House, id=house_id)
+        house.availability = False
+        house.save()
+        rental = RentalForm()
+        if rental.is_valid():
+            rental.save()
+        else:
+            print(rental.errors)
         return super().form_valid(form)
-
-
-# def add_location(request):
-#     if request.method == "POST":
-#         form = FormLocation(request.POST)
-#         if form.is_valid():
-#             form.save()
-#             return redirect("houses")
-#         else:
-#             form = FormLocation()
-#             template_name = "appLocation/add_location.html"
-#         return render(request, template_name, {"form": form})
-#
 
 
 def signing_up(request):
