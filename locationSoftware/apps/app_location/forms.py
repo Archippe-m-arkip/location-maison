@@ -21,13 +21,14 @@ class RentalForm(forms.ModelForm):
 class SignUpUser(UserCreationForm):
 
     email = forms.EmailField(required=True)  # On ajoute un champ email
+    image = forms.ImageField(required=False)
 
     class Meta:
         model = User
-        fields = ["name", "username", "email", "password1", "password2"]
+        fields = ["name", "username", "image", "email", "password1", "password2"]
 
 
-class Payment(forms.ModelForm):
+class PaymentForm(forms.ModelForm):
     class Meta:
         model = Payment
         fields = "__all__"

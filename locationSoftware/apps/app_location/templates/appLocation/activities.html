@@ -27,40 +27,36 @@
 
     </div>
     <div class="table-responsive">
-    <table class="table table-responsive table-borderless">
+        <p>
 
+        </p>
+    <table class="table table-responsive table-borderless">
       <thead>
-        <tr class="bg-light">
-          <th scope="col" width="5%"><input class="form-check-input" type="checkbox"></th>
+        <tr class="bg-dark text-white">
+<!--          <th scope="col" width="5%"><input class="form-check-input" type="checkbox"></th>-->
           <th scope="col" width="5%">#</th>
-          <th scope="col" width="20%">Date</th>
+          <th scope="col" width="20%">Type de maisons</th>
           <th scope="col" width="10%">Status</th>
-          <th scope="col" width="20%">Customer</th>
+          <th scope="col" width="20%">Locateur</th>
+          <th scope="col" width="20%">Bailleur</th>
           <th scope="col" width="20%">Disponibilite</th>
-          <th scope="col" class="text-end" width="20%"><span>Revenue</span></th>
+          <th scope="col" class="text-end" width="20%"><span>Price</span></th>
         </tr>
       </thead>
-  <tbody>
-  {% for object in object_list %}
+  <tbody class="parent">
+  {% for object in maisons %}
         <tr>
-          <th scope="row"><input class="form-check-input" type="checkbox"></th>
+            <!--<th scope="row"><input class="form-check-input" type="checkbox"></th>-->
           <td>{{ object.id }}</td>
-          <td>{{ rent }}</td>
-          <td><i class="fa fa-check-circle-o green"></i><span class="ms-1">Paid</span></td>
-          <td><img src="https://i.imgur.com/VKOeFyS.png" width="25"> {{ object.user }}</td>
-          <td>Wirecard for figma</td>
-          <td class="text-end"><span class="fw-bolder">$0.99</span> <i class="fa fa-ellipsis-h  ms-2"></i></td>
+          <td>{{ object.type_house | capfirst }}</td>
+          <td><i class="fa fa-check-circle-o green"></i><span class="ms-1">{{ object.number_locations }}</span></td>
+            <td><span class=" overflow-hidden  rounded-circle overflow-hidden "> <img height="35" class="" src="{{ object.image.url }}"> </span>{{ object.user }}</td>
+          <td>{{ object.created_by }}</td>
+          <td>{{ object.availability}}</td>
+          <td class="text-end"><span class="fw-bolder">{{ object.price |floatformat:2}}fb</span></td>
         </tr>
      {% endfor %}
-    <tr>
-      <th scope="row"><input class="form-check-input" type="checkbox"></th>
-      <td>14</td>
-      <td>12 Oct, 21</td>
-      <td><i class="fa fa-dot-circle-o text-danger"></i><span class="ms-1">Failed</span></td>
-      <td><img src="https://i.imgur.com/nmnmfGv.png" width="25"> Tomo arvis</td>
-      <td>Altroz furry</td>
-      <td class="text-end"><span class="fw-bolder">$0.19</span> <i class="fa fa-ellipsis-h  ms-2"></i></td>
-    </tr>
+
 
 
 

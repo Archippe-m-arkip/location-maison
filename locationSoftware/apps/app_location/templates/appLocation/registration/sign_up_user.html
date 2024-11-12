@@ -23,13 +23,33 @@
 
                       {% load widget_tweaks %}
 
-                      <form action="{% url 'login' %}" method="post" class="h-auto w-100">
+                      <form action="{% url 'sign_up_user' %}" method="post" enctype="multipart/form-data" class="h-auto w-100">
                         {% csrf_token %}
-
+                          {%if form.errors %}
+                              {% for field in form %}
+                                  {% for error in field.errors %}
+                                      <div class="alert alert-danger alert-opacity-50 d-flex ">
+                                          <p>{{ error }}</p>
+                                      </div>
+                                  {% endfor %}
+                              {% endfor %}
+                              {% for error in form.non_field_errors %}
+                                  <div class="alert alert-danger bg-opacity-50 d-flex">
+                                      <strong>{{ error|escape }}</strong>
+                                  </div>
+                              {% endfor %}
+                          {% endif %}
                           <div class="col-12">
                               <div class="form-floating mb-3 h-auto">
                                 {% render_field form.name type="text"  id="name" class+="form-control w-100"  placeholder="Username" %}
                                 <label for="name" class="form-label bg-opacity-0">Name</label>
+                              </div>
+                          </div>
+
+                          <div class="col-12">
+                              <div class="form-floating mb-3 h-auto">
+                                {% render_field form.image  id="image" class+="form-control w-100 border-s "  placeholder="Image" %}
+                                <label for="image" class="form-label bg-opacity-0 pt-2 ">Image</label>
                               </div>
                           </div>
 

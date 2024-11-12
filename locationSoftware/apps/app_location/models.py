@@ -2,6 +2,7 @@
 from apps.authuser.models import User
 from apps.core.models import BaseModel
 from django.db import models
+from django.db.models import Count
 from django.utils import timezone
 
 
@@ -58,7 +59,6 @@ class Paid(BaseModel):
         Payment, on_delete=models.CASCADE, related_name="payments"
     )
     rental = models.ForeignKey(Rental, on_delete=models.CASCADE, related_name="rented")
-
     house = models.ForeignKey(
         House, on_delete=models.CASCADE, related_name="paid_house"
     )

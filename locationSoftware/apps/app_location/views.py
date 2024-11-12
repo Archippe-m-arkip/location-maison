@@ -5,6 +5,7 @@ from apps.authuser.models import User
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models import Count
 from django.http import Http404
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
@@ -15,8 +16,8 @@ from django.views.generic.edit import UpdateView
 from django.views.generic.list import ListView
 from urllib3 import request
 
-from .forms import HouseForm, RentalForm, SignUpUser
-from .models import House, Rental
+from .forms import HouseForm, PaymentForm, RentalForm, SignUpUser
+from .models import House, Payment, Rental
 
 
 class Home(TemplateView):
@@ -30,10 +31,8 @@ class ShowAllHouses(ListView):
 
     def get_queryset(self):
         available = self.request.GET
-        print(available)
         if available:
             available = self.request.GET.get("disponible")
-
             if available == "true":
                 object_list = House.objects.all().exclude(availability=False)
                 return object_list
@@ -49,31 +48,35 @@ class ShowAllHouses(ListView):
             elif available == "soon":
                 not_available_houses = House.objects.filter(availability=False)
                 # today = timezone.now()
-                rent_object = Rental.objects.all().order_by("-date_end")
+                rent_object = Rental.objects.order_by("-date_end")
 
                 for rental in rent_object:
                     for not_available in not_available_houses:
                         if rental.house == not_available:
                             obj_list = rent_object
 
-                return not_available_houses
+                return rent_object
         else:
-            print("Noooooooone")
             object_list = House.objects.all()
-
             return object_list
 
         object_list = House.objects.all()
         return object_list
 
 
+class MyHouses(ListView):
+    paginate_by = 3
+    model = House
+    template_name = "appLocation/my-reservations.html"
+
+
 class Activities(ListView):
     model = House
     template_name = "appLocation/activities.html"
+    context_object_name = "maisons"
 
     def get_queryset(self):
-        object_list = House.objects.all()
-        return object_list
+        return House.objects.annotate(number_locations=Count("rented"))
 
 
 class DetailsHouse(DetailView):
@@ -158,6 +161,35 @@ class CreateRental(CreateView):
         else:
             print(rental.errors)
         return super().form_valid(form)
+
+
+# class CreatePayement(CreateView):
+#     model = PaymentForm
+#     template_name = "appLocation/add_payement.html"
+#     success_url = reverse_lazy("payement")
+#
+#     def get_initial(self):
+#         house_id = self.kwargs.get("house_id")
+#         user_id = self.kwargs.get("user_id")
+#         house = get_object_or_404(House, id=house_id)
+#         user = get_object_or_404(User, id=user_id)
+#         return {
+#             "house": house,
+#             "user": user,
+#             "username_locator": self.request.user.username,
+#         }
+#
+#     def form_valid(self, form):
+#         house_id = self.kwargs.get("house_id")
+#         house = get_object_or_404(House, id=house_id)
+#         house.availability = False
+#         house.save()
+#         rental = RentalForm()
+#         if rental.is_valid():
+#             rental.save()
+#         else:
+#             print(rental.errors)
+#         return super().form_valid(form)
 
 
 def signing_up(request):

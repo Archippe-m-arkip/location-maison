@@ -1,32 +1,22 @@
 {% extends "appLocation/master.html" %}
 
-    {% block title %}
-        Detail maison
-    {% endblock %}
-{% block content %}
-    {% include 'appLocation/navbar.html' %}
+{% block title %}
+    Toutes les maisons
+{% endblock %}
+ {% block content %}
+        {% include 'appLocation/navbar.html' %}
 
-    {% load static %}
 
-<section class="py-2">
+
+
+
+        <section class="py-2">
             <div class="container px-5 m-bottom-2">
-                <div class="py-3  w-100 border-1 border-bottom">
-                    <h4 class="fw-normal">Filtrer les maisons : </h4>
 
-                    <div class="d-flex gap-3 pt-2">
-
-                        <a href="{% url 'houses' %}" class="badge bg-primary bg-gradient bg-opacity-10 text-primary rounded-pill mb-2 p-2 px-3  {% if request.path == '/les-maisons/' %} text-white  bg-opacity-100 active {% endif %} ">Toutes les maisons</a>
-                        <a href="{% url 'houses'  %}?disponible=true" class="badge bg-primary bg-gradient bg-opacity-10 text-primary rounded-pill mb-2 p-2 px-3  {% if request.path == '/les-maisons/disponible' %} text-white bg-opacity-100 active {% endif %} ">Disponible</a>
-                        <a href="{% url 'houses' %}?disponible=false" class="badge bg-primary bg-gradient bg-opacity-10 text-primary rounded-pill mb-2 p-2 px-3  {% if request.path == '/' %} text-white bg-opacity-100 active {% endif %} ">Maisons en locations</a>
-                        <a href="" class="badge bg-primary bg-gradient bg-opacity-10 text-primary rounded-pill mb-2 p-2 px-3  {% if request.path == '/' %} text-white bg-opacity-100 active {% endif %} ">Bientot disponible</a>
-
-                    </div>
-
-                </div>
                   <div class="row gx-5 justify-content-start mt-3">
                      <div class="col-lg-8 col-xl-6">
                         <div class="w-100">
-                              <h2 class="fw-bolder">Toutes les maisons</h2>
+                              <h2 class="fw-bolder">Mes reservations</h2>
                               <p class="w-auto fw-normal text-muted mb-5">Explorer les differentes categories de maisolns et prenez en location toutes celles qui vous interesse</p>
                         </div>
                      </div>
@@ -39,7 +29,7 @@
                             <div class="card h-100 shadow border-0">
                                 <img class="card-img-top" src="{{ object.image.url }}" alt="..." />
                                 <div class="card-body p-4">
-                                        {% if object.is_available %}
+                                        {% if object.availability %}
                                             <div class="badge bg-primary  bg-opacity-75 bg-gradient rounded-pill mb-3">Disponible</div>
 
                                         {% else %}
@@ -50,7 +40,7 @@
 
 
                                     <div class="badge bg-primary bg-gradient rounded-pill mb-2"></div>
-                                    <a class="text-decoration-none link-dark stretched-link" href="{% url 'details' object.id %}"><h5 class="card-title mb-3"> Maison de type {{object.type_house}} </h5></a>
+                                    <a class="text-decoration-none link-dark stretched-link" href="{% url 'details' object.id %}"><h5 class="card-title mb-3"> Maison de type {{ object.type_house}} </h5></a>
                                     <p class="card-text mb-0"><span class="fw-semibold text-black text-opacity-75">Nombre des chambres : </span>{{ object.nbrRooms }}</p>
                                     <p class="card-text mb-0"><span class="fw-semibold text-black text-opacity-75">Price : </span>{{ object.price }} fbu</p>
                                     <p class="card-text mb-0"><span class="fw-semibold text-black text-opacity-75">Quartier :</span> {{ object.quarter }}</p>
@@ -81,8 +71,8 @@
                 <div class="pagination w-100 navigation ">
                     <span class="step-links mx-auto border-bottom border-top border-gray bg-light  p-1 px-3 rounded-2" >
                         {% if page_obj.has_previous %}
-                            <a class="pe-2" href="?page=1">&laquo; first</a>
-                            <a class="" href="?page={{ page_obj.previous_page_number }}">previous</a>
+                            <a class="pe-2" href="{{ request.path }}?disponible={{ request.GET.disponible|default:'' }}&page=1">&laquo; first</a>
+                            <a class="" href="{{ request.path }}?disponible={{ request.GET.disponible|default:'' }}&page={{ page_obj.previous_page_number }}">previous</a>
                         {% endif %}
 
                         <span class="current fw-semibold px-1 page-item">
@@ -90,8 +80,8 @@
                         </span>
 
                         {% if page_obj.has_next %}
-                            <a class="" href="?page={{ page_obj.next_page_number }}">next</a>
-                            <a class="ps-2 page-item" href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+                            <a class="" href="{{ request.path }}?disponible={{ request.GET.disponible|default:'' }}&page={{ page_obj.next_page_number }}">next</a>
+                            <a class="ps-2 page-item" href="{{ request.path }}?disponible={{ request.GET.disponible|default:'' }}&page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
                         {% endif %}
                     </span>
                 </div>
@@ -99,7 +89,4 @@
 
             </div>
          </section>
-
-
-
 {% endblock %}

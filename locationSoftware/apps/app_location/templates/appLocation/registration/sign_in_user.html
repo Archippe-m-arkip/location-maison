@@ -25,15 +25,20 @@
 
             <form action="" method="post" class="h-auto">
               {% csrf_token %}
-
-              {% if form.non_field_errors %}
-              <div class="alert alert-danger">
-                  {% for error in form.non_field_errors %}
-                    <p>{{ error }}</p>
-                  {% endfor %}
-
-              </div>
-            {% endif %}
+                  {%if form.errors %}
+                      {% for field in form %}
+                          {% for error in field.errors %}
+                              <div class="alert alert-danger alert-opacity-50 d-flex ">
+                                  <p>{{ error }}</p>
+                              </div>
+                          {% endfor %}
+                      {% endfor %}
+                      {% for error in form.non_field_errors %}
+                          <div class="alert alert-danger bg-opacity-50 d-flex">
+                              <p>{{ error|escape }}</p>
+                          </div>
+                      {% endfor %}
+                  {% endif %}
 
                 <div class="col-12">
                   <div class="form-floating mb-3 h-auto">
@@ -65,15 +70,13 @@
                   <div class="d-grid d-flex my-3 w-100 gap-3 justify-content-between">
                     <button class="btn btn-light border border-primary border-opacity-25 opacity-10 text-primary btn-md w-50" type="reset"><a href="{% url 'home' %}">Annuler</a></button>
                     <button class="btn btn-primary btn-md w-50" type="submit">Connexion</button>
-
-
                   </div>
                 </div>
                 <div class="col-12">
                   <p class="m-0 text-secondary text-center">Vous n'etes pas encore inscrit? <a href="{% url 'sign_up_user' %}" class="link-primary text-decoration-none"> S'inscrire.</a></p>
 
                 </div>
-              </div>
+
             </form>
           </div>
         </div>

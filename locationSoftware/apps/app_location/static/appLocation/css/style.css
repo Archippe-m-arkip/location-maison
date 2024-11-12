@@ -10866,3 +10866,16 @@ li{
     cursor: not-allowed !important;
 
 }
+
+
+.parent tr:nth-child(odd){
+  background: var(--bs-gray-100);
+}
+
+.object-fit-cover{
+object-fit: cover;
+}
+
+.overflow-hidden{
+overflow: hidden;
+}

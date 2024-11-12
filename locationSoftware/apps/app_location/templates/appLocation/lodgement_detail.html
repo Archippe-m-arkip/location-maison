@@ -27,6 +27,7 @@
                     </div>
                     <p><span class="fw-semibold text-black text-opacity-75">Nombre des chambres : </span> {{theHouse.nbrRooms}}</p>
                     <p><span class="fw-semibold text-black text-opacity-75">Prix mensuel : </span>{{ theHouse.price }} fbu</p>
+                    <p><span class="fw-semibold text-black text-opacity-75">Nbr de fois louee : </span>{{ theHouse.number_locations }} </p>
                     <p><span class="fw-semibold text-black text-opacity-75">Superficie de : </span> {{ theHouse.superficies }}m<sup>2</sup></p>
                     <p><span class="fw-semibold text-black text-opacity-75">Quartier : </span> {{ theHouse.quarter }}</p>
                     <p><span class="fw-semibold text-black text-opacity-75">Adresse : </span> {{ theHouse.address }}</p>
@@ -39,9 +40,9 @@
 
                             {% if theHouse.availability == True %}
 
-                           <a href="{% url 'add_location' theHouse.id user.id %}"  class="btn btn-primary" type="submit">Louer cette maison</a>
+                           <a href="{% url 'add_location' theHouse.id user.id %}"  class="btn btn-primary" type="submit" title="Prendre cette maison en location">Louer cette maison</a>
                             {% else %}
-                           <a href=""  class="  btn   bg-black bg-opacity-10 text-black text-opacity-25  cursor-not-allowed"  type="submit">Louer cette maison</a>
+                           <a href=""  class="  btn   bg-black bg-opacity-10 text-black text-opacity-25  cursor-not-allowed"  type="submit" title="Cette maison ne peut etre louee pour le moment">Louer cette maison</a>
 
                             {% endif %}
 

@@ -9,6 +9,20 @@
         <h1>Ajouter une maison</h1>
         <form method="POST" enctype="multipart/form-data" style="padding: 0px 20px; space-y:5px">
             {% csrf_token %}
+                 {%if form.errors %}
+                      {% for field in form %}
+                          {% for error in field.errors %}
+                              <div class="alert alert-danger alert-opacity-50 d-flex ">
+                                  <p>{{ error }}</p>
+                              </div>
+                          {% endfor %}
+                      {% endfor %}
+                      {% for error in form.non_field_errors %}
+                          <div class="alert alert-danger bg-opacity-50 d-flex">
+                              <p>{{ error|escape }}</p>
+                          </div>
+                      {% endfor %}
+                  {% endif %}
 
             {{ form.as_p }}
             <button type="submit">Ajouter</button>

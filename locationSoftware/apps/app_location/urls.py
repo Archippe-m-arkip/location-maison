@@ -9,6 +9,7 @@ from .views import (
     DeleteHouse,
     DetailsHouse,
     Home,
+    MyHouses,
     ShowAllHouses,
     UpdateHouse,
 )
@@ -27,7 +28,8 @@ urlpatterns = [
         CreateRental.as_view(),
         name="add_location",
     ),
-    path("mes-reservations/", ShowAllHouses.as_view(), name="mes-reservations"),
+    path("mes-reservations/", MyHouses.as_view(), name="mes-reservations"),
+    # path("payer/", CreatePayement.as_view(), name="pay"),
     path("activites/", Activities.as_view(), name="activities"),
     path("inscription/", RegisterView.as_view(), name="sign_up_user"),
     path(

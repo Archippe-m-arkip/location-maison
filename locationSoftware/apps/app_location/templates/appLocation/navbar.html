@@ -1,4 +1,6 @@
 {% load widget_tweaks %}
+{% load static %}
+
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-5x sticky-top">
     <div class="container px-5">
@@ -14,6 +16,7 @@
                 <div class="d-flex ps-4 align-items-center justify-content-evenly " >
 
                     {% if user.is_authenticated == True %}
+                        <img src="{{ user.image.url }}" height="38" width="38" class="me-2 rounded-5">
                         <h3 class="text-warning my-auto">
                             {{ user.name }}
                         </h3>
@@ -22,10 +25,9 @@
                             <input type="submit" class="btn bg-danger bg-opacity-75 text-white px-3 ms-3" value="Deconnexion">
                         </form>
                     {% else %}
-                        <form action="{% url 'login' %}?next={{ request.path }}" method="post">
-                            {% csrf_token %}
-                            <input type="submit" class="btn bg-primary bg-opacity-75 fw-500 text-white px-3 ms-3" value="Se connecter">
-                        </form>
+
+
+                        <a href="{% url 'login' %}?next={{ request.path }}" class="btn bg-primary bg-opacity-75 fw-500 text-white px-3 ms-3">Se connecter</a>
                     {% endif %}
                 </div>
             </ul>
