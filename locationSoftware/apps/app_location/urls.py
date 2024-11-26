@@ -5,6 +5,7 @@ from rest_framework.authtoken.views import obtain_auth_token
 from . import views
 from .views import (
     Activities,
+    CreatePayment,
     CreateRental,
     DeleteHouse,
     DetailsHouse,
@@ -12,6 +13,7 @@ from .views import (
     MyHouses,
     ShowAllHouses,
     UpdateHouse,
+    change_language,
 )
 
 urlpatterns = [
@@ -29,13 +31,10 @@ urlpatterns = [
         name="add_location",
     ),
     path("mes-reservations/", MyHouses.as_view(), name="mes-reservations"),
-    # path("payer/", CreatePayement.as_view(), name="pay"),
+    path("payer/<int:user_id>", CreatePayment.as_view(), name="payment"),
     path("activites/", Activities.as_view(), name="activities"),
     path("inscription/", RegisterView.as_view(), name="sign_up_user"),
-    path(
-        "connexion/",
-        UserLoginView.as_view(),
-        name="login",
-    ),
+    path("connexion/", UserLoginView.as_view(), name="login"),
     path("deconnexion/", UserLogoutView.as_view(), name="logout"),
+    path("change-language/", views.change_language, name="change_lang"),
 ]

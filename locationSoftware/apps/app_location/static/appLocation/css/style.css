@@ -10868,7 +10868,7 @@ li{
 }
 
 
-.parent tr:nth-child(odd){
+.parent tr:nth-child(even){
   background: var(--bs-gray-100);
 }
 

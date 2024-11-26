@@ -3,6 +3,7 @@
     {% block title %}
         Detail maison
     {% endblock %}
+{% load humanize %}
 {% block content %}
     {% include 'appLocation/navbar.html' %}
 
@@ -11,7 +12,7 @@
             <!-- Heading Row-->
             <div class="row gx-4 gx-lg-5 align-items-center my-5">
                 <div class="img-fuid  col-lg-7 ">
-                    <img class="img-fluid  w-50 d-block mx-auto rounded mb-4 mb-lg-0" src="{{ theHouse.image.url }}" />
+                    <img class="img-fluid  w-75 d-block mx-auto rounded mb-4 mb-lg-0" src="{{ theHouse.image.url }}" />
                 </div>
                 <div class="col-lg-5 bg-white card border-0 shadow-sm py-5">
                     <div class=" w-100 ">
@@ -21,21 +22,19 @@
 
                         {% else %}
                             <div class="badge bg-danger  bg-opacity-50 bg-gradient rounded-pill mb-2 m-auto me-2">Non disponible</div>
-                            <div class="badge bg-black bg-opacity-10  bg-gradient  rounded-pill mb-2 m-auto text-black text-opacity-50">Libre le {{ rent.date_rent }}</div>
+                            <div class="badge bg-black bg-opacity-10  bg-gradient  rounded-pill mb-2 m-auto text-black text-opacity-50">Libre le {{ rent.date_end }}</div>
 
                         {% endif %}
                     </div>
                     <p><span class="fw-semibold text-black text-opacity-75">Nombre des chambres : </span> {{theHouse.nbrRooms}}</p>
-                    <p><span class="fw-semibold text-black text-opacity-75">Prix mensuel : </span>{{ theHouse.price }} fbu</p>
-                    <p><span class="fw-semibold text-black text-opacity-75">Nbr de fois louee : </span>{{ theHouse.number_locations }} </p>
-                    <p><span class="fw-semibold text-black text-opacity-75">Superficie de : </span> {{ theHouse.superficies }}m<sup>2</sup></p>
+                    <p><span class="fw-semibold text-black text-opacity-75">Prix mensuel : </span>{{ theHouse.price | intcomma }} fbu</p>
+                    <p><span class="fw-semibold text-black text-opacity-75">Nbr de fois louee : </span>{{ object.nbr_locations | intcomma }} </p>
+                    <p><span class="fw-semibold text-black text-opacity-75">Superficie de : </span> {{ theHouse.superficies | intcomma }}m<sup>2</sup></p>
                     <p><span class="fw-semibold text-black text-opacity-75">Quartier : </span> {{ theHouse.quarter }}</p>
                     <p><span class="fw-semibold text-black text-opacity-75">Adresse : </span> {{ theHouse.address }}</p>
-                    <p><span class="fw-semibold text-black text-opacity-75">Description : </span> {{ theHouse.description }}</p>
+                    <p><span class="fw-semibold text-black text-opacity-75">Proprietaire : </span> {{ theHouse.user }}</p>
 
-
-
-                   <div class="d-flex gap-2">
+                   <div class="d-flex gap-2 ">
                       {% if user.is_authenticated %}
 
                             {% if theHouse.availability == True %}
@@ -59,16 +58,19 @@
                             </form>
                         {% endif %}
                     {% else %}
-                        <p class="card p-1 px-2 border-1 border-danger border-opacity-25 bg-danger bg-opacity-10 text-gray small text-opacity-10 w-100">Vous devez être connecté pour réserver cette maison. <a href="{% url 'login' %}?next={{ request.path }}">Se connecter</a></p>
+                        <p class="card p-2 px-2 border-1 border-danger border-opacity-25 bg-danger bg-opacity-10 text-gray small text-opacity-10 w-100">Vous devez être connecté pour réserver cette maison. <a href="{% url 'login' %}?next={{ request.path }}">Se connecter</a></p>
                     {% endif %}
 
                    </div>
                 </div>
             </div>
             <!-- Call to Action-->
-            <div class="card text-white bg-secondary my-5 py-4 text-center">
-                <div class="card-body"><p class="text-white m-0">This call to action card is a great place to showcase some important information or display a clever tagline!</p></div>
+           <div>
+                <h3>Description</h3>
+            <div class="card text-black bg-light my-2 bg-opacity-50 mb-5  py-2 ">
+                <div class="card-body "><p class=" m-0">{{ theHouse.description }}</p></div>
             </div>
+           </div>
             <!-- Content Row-->
             <div class="row gx-4 gx-lg-5">
                 <div class="col-md-4 mb-5">

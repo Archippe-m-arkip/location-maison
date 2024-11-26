@@ -1,4 +1,5 @@
 from apps.app_location.models import House, Rental
+from django.db.models import Count
 from django.utils import timezone
 
 
@@ -23,10 +24,10 @@ def remaining_time_context(request):
         for not_available in not_available_houses:
             if rent.house == not_available:
                 if remaining_time > 0:
-                    remaining_time = remaining_time + "pour expirer"
+                    return {"remaining_time": remaining_time}
 
                 elif remaining_time == 0:
-                    remaining_time = "expire aujourd'hui"
+                    return {"remaining_time": remaining_time}
 
                 else:
                     remaining_time = remaining_time + "apres expiration"
@@ -34,6 +35,9 @@ def remaining_time_context(request):
             return {"remaining_time": remaining_time}
 
 
-def rents_order_by_date_end(request):
-    rents = Rental.objects.all().order_by("-date_end")
-    return {"rents_by_date_end": rents}
+def rented_times_number(request):
+    house_rents = House.objects.annotate(nbr_rent=Count("rented"))
+
+    for house_rent in house_rents:
+        print(house_rent.nbr_rent, house_rent)
+        return {"rent_times": house_rent.nbr_rent}

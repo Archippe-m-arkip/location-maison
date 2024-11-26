@@ -1,4 +1,4 @@
 {
-    "editor.fontFamily": "JetBrains Mono",
-    "editor.fontLigatures": true,
+    "editor.lineHeight": 1.9,
+    "editor.inlineCompletionsAccessibilityVerbose": true
 }

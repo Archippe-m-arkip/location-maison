@@ -16,7 +16,7 @@
                 </div>
 
                 <form action="" method="post" class="h-auto">
-                  {% csrf_token %}
+                    {% csrf_token %}
                        {%if form.errors %}
                       {% for field in form %}
                           {% for error in field.errors %}
@@ -30,9 +30,9 @@
                               <p>{{ error|escape }}</p>
                           </div>
                       {% endfor %}
-                  {% endif %}
+                    {% endif %}
 
-                    <div class="col-12">
+                        <div class="col-12">
                           <div class="form-floating mb-3 h-auto">
                              {% render_field form.user value="form.user.value" id="house" class="form-control"   placeholder="House"  %}
 

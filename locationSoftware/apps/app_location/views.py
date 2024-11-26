@@ -5,11 +5,11 @@ from apps.authuser.models import User
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.db.models import Count
-from django.http import Http404
+from django.db.models import Count, Max, Min
+from django.http import Http404, HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
-from django.utils import timezone
+from django.utils import timezone, translation
 from django.views.generic import CreateView, DeleteView, TemplateView, View
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import UpdateView
@@ -34,33 +34,45 @@ class ShowAllHouses(ListView):
         if available:
             available = self.request.GET.get("disponible")
             if available == "true":
-                object_list = House.objects.all().exclude(availability=False)
+                object_list = (
+                    House.objects.select_related("user")
+                    .annotate(
+                        nbr_rent=Count("rented"), last_date=Max("rented__date_end")
+                    )
+                    .exclude(availability=False)
+                )
                 return object_list
 
             elif available == "false":
-                object_list = House.objects.filter(availability=False)
+                object_list = House.objects.filter(availability=False).annotate(
+                    nbr_rent=Count("rented"), last_date=Max("rented__date_end")
+                )
                 return object_list
 
             elif available == "all":
-                object_list = House.objects.all()
+                object_list = House.objects.all().annotate(
+                    nbr_rent=Count("rented"), last_date=Max("rented__date_end")
+                )
                 return object_list
 
             elif available == "soon":
-                not_available_houses = House.objects.filter(availability=False)
-                # today = timezone.now()
-                rent_object = Rental.objects.order_by("-date_end")
-
-                for rental in rent_object:
-                    for not_available in not_available_houses:
-                        if rental.house == not_available:
-                            obj_list = rent_object
-
-                return rent_object
+                not_available_houses = (
+                    House.objects.filter(availability=False)
+                    .annotate(
+                        nbr_rent=Count("rented"), last_date=Max("rented__date_end")
+                    )
+                    .order_by("last_date")
+                )
+                return not_available_houses
         else:
-            object_list = House.objects.all()
+            object_list = House.objects.all().annotate(
+                nbr_rent=Count("rented"), last_date=Max("rented__date_end")
+            )
             return object_list
 
-        object_list = House.objects.all()
+        object_list = House.objects.annotate(
+            nbr_rent=Count("rented"), last_date=Max("rented__date_end")
+        )
         return object_list
 
 
@@ -69,14 +81,21 @@ class MyHouses(ListView):
     model = House
     template_name = "appLocation/my-reservations.html"
 
+    def get_queryset(self):
+        user_id = self.request.user.id
+        rental = Rental.objects.select_related("house").filter(user_id=user_id)
+        return rental
+
 
 class Activities(ListView):
+    paginate_by = 9
     model = House
     template_name = "appLocation/activities.html"
     context_object_name = "maisons"
 
     def get_queryset(self):
-        return House.objects.annotate(number_locations=Count("rented"))
+        houses = House.objects.annotate(number_locations=Count("rented"))
+        return houses
 
 
 class DetailsHouse(DetailView):
@@ -89,6 +108,11 @@ class DetailsHouse(DetailView):
         if obj.is_deleted:
             raise Http404("Cette maison a été supprimée.")
         return obj
+
+    def get_queryset(self):
+        return House.objects.annotate(
+            nbr_locations=Count("rented"), last_date=Max("rented__date_end")
+        )
 
 
 class DeleteHouse(ListView):
@@ -163,33 +187,31 @@ class CreateRental(CreateView):
         return super().form_valid(form)
 
 
-# class CreatePayement(CreateView):
-#     model = PaymentForm
-#     template_name = "appLocation/add_payement.html"
-#     success_url = reverse_lazy("payement")
-#
-#     def get_initial(self):
-#         house_id = self.kwargs.get("house_id")
-#         user_id = self.kwargs.get("user_id")
-#         house = get_object_or_404(House, id=house_id)
-#         user = get_object_or_404(User, id=user_id)
-#         return {
-#             "house": house,
-#             "user": user,
-#             "username_locator": self.request.user.username,
-#         }
-#
-#     def form_valid(self, form):
-#         house_id = self.kwargs.get("house_id")
-#         house = get_object_or_404(House, id=house_id)
-#         house.availability = False
-#         house.save()
-#         rental = RentalForm()
-#         if rental.is_valid():
-#             rental.save()
-#         else:
-#             print(rental.errors)
-#         return super().form_valid(form)
+class CreatePayment(CreateView):
+    model = Payment
+    form_class = PaymentForm
+    template_name = "appLocation/add_payement.html"
+    exclude = ["user", "created_by"]
+    success_url = reverse_lazy("houses")
+
+    def get_initial(self):
+        user_id = self.kwargs.get("user_id")
+        user = get_object_or_404(User, id=user_id)
+        time = timezone.now()
+
+        return {
+            "user": user,
+            "time": time,
+        }
+
+    def form_valid(self, form):
+        time = timezone.now()
+        payment = PaymentForm()
+        if payment.is_valid():
+            payment.save()
+        else:
+            print(f"{payment.errors}")
+        return super().form_valid(form)
 
 
 def signing_up(request):
@@ -205,6 +227,15 @@ def signing_up(request):
     else:
         form = SignUpUser()
     return render(request, "appLocation/registration/sign_up_user.html", {"form": form})
+
+
+def change_language(request):
+    if request.method == "POST":
+        lang_code = request.POST.get("language")
+        translation.activate(lang_code)
+        # request.session[translation.LANGUAGE_SESSION_KEY] = lang_code
+        print(f"{lang_code}--------------------------------------")
+        return HttpResponse(f"Langue changee vers {request.path}")
 
 
 # def signing_in(request):

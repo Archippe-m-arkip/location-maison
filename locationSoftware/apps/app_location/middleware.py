@@ -7,7 +7,10 @@ class CheckUserAuthenticatedMiddleware:
         self.get_response = get_response
 
     def __call__(self, request):
-        if request.path.startswith("/activites/") and not request.user.is_authenticated:
-            return redirect("login")
+        links = ["/mes-reservations/", "/ajouter-maison/"]
+        for link in links:
+            print(link)
+            if request.path.startswith(link) and not request.user.is_authenticated:
+                return redirect("login")
         response = self.get_response(request)
         return response

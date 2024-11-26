@@ -3,6 +3,8 @@
 {% block title %}
     Toutes les maisons
 {% endblock %}
+{% load humanize %}
+{% load i18n %}
  {% block content %}
         {% include 'appLocation/navbar.html' %}
 
@@ -10,10 +12,10 @@
 
 
 
-        <section class="py-2">
-            <div class="container px-5 m-bottom-2">
+        <section class="py-2 relative">
+            <div class="container px-5 m-bottom-2 ">
                 <div class="py-3  w-100 border-1 border-bottom">
-                    <h4 class="fw-normal">Filtrer les maisons : </h4>
+                    <h4 class="fw-normal">{% trans "Filtrer les maisons : " %}</h4>
 
                     <div class="d-flex gap-3 pt-2">
                         <a href="{% url 'houses' %}" class="badge bg-primary bg-gradient bg-opacity-10 text-primary rounded-pill mb-2 p-2 px-3  {% if not request.GET.disponible %} text-white  bg-opacity-100 active {% endif %} ">Toutes les maisons</a>
@@ -31,71 +33,73 @@
                         </div>
                      </div>
                   </div>
-                  <div class="row gx-5">
+                  <div class="row gx-5" >
 
                     {% for object in object_list %}
 
-                        <div class="col-lg-4 mb-5">
-                            <div class="card h-100 shadow border-0">
-                                <img class="card-img-top" src="{{ object.image.url }}" alt="..." />
-                                <div class="card-body p-4">
-                                        {% if object.availability %}
-                                            <div class="badge bg-primary  bg-opacity-75 bg-gradient rounded-pill mb-3">Disponible</div>
+                            <div class="col-lg-4 mb-5">
+                                <div class="card h-auto shadow border-0 ">
+                                    <div style="height:210px" class="overflow-hidden bg-light">
+                                        <img class="card-img-top object-fit-cover img-fluid" src="{{ object.image.url }}" alt="..." />
+                                    </div>
+                                    <div class="card-body p-4 h-auto ">
+                                            {% if object.availability %}
+                                                <div class="badge bg-primary  bg-opacity-75 bg-gradient rounded-pill mb-3">Disponible</div>
 
-                                        {% else %}
-                                            <div class="badge bg-danger  bg-opacity-75 bg-gradient rounded-pill mb-3">Non disponible</div>
+                                            {% else %}
+                                                <div class="badge bg-danger  bg-opacity-75 bg-gradient rounded-pill mb-3">Non disponible</div>
+                                                <div class="badge bg-black bg-opacity-10  bg-gradient  rounded-pill mb-2 m-auto text-black text-opacity-50">Libre le {{ object.last_date |date}}</div>
 
-                                        {% endif %}
+                                            {% endif %}
+                                        <div class="badge bg-primary bg-gradient rounded-pill mb-2"></div>
+                                        <a class="text-decoration-none link-dark stretched-link" href="{% url 'details' object.id %}"><h5 class="card-title mb-3"> Maison de type {{ object.type_house}} </h5></a>
+                                        <p class="card-text mb-0"><span class="fw-semibold text-black text-opacity-75">Nombre des chambres : </span>{{ object.nbrRooms }}</p>
+                                        <p class="card-text mb-0"><span class="fw-semibold text-black text-opacity-75">Price : </span>{{ object.price |intcomma }} fbu</p>
+                                        <p class="card-text mb-0"><span class="fw-semibold text-black text-opacity-75">Quartier :</span> {{ object.quarter }}</p>
+                                        <p class="card-text mb-0"><span class="fw-semibold text-black text-opacity-75">Adresse :</span> {{ object.address }} </p>
+                                        <p class="card-text mb-0"><span class="fw-semibold text-black text-opacity-75">Nbr de fois louee :</span> {{ object.nbr_rent}} </p>
+                                        <p class="card-text mb-0"><span class="fw-semibold text-black text-opacity-75">Date de fin :</span> {% if object.last_date %} {{ object.last_date |date }} {% else %} ------- {% endif %} </p>
+                                    </div>
+                                    <div>
 
-
-
-                                    <div class="badge bg-primary bg-gradient rounded-pill mb-2"></div>
-                                    <a class="text-decoration-none link-dark stretched-link" href="{% url 'details' object.id %}"><h5 class="card-title mb-3"> Maison de type {{ object.type_house}} </h5></a>
-                                    <p class="card-text mb-0"><span class="fw-semibold text-black text-opacity-75">Nombre des chambres : </span>{{ object.nbrRooms }}</p>
-                                    <p class="card-text mb-0"><span class="fw-semibold text-black text-opacity-75">Price : </span>{{ object.price }} fbu</p>
-                                    <p class="card-text mb-0"><span class="fw-semibold text-black text-opacity-75">Quartier :</span> {{ object.quarter }}</p>
-                                    <p class="card-text mb-0"><span class="fw-semibold text-black text-opacity-75">Adresse :</span> {{ object.address }} </p>
-                                </div>
-                                <div>
-
-                                </div>
-                                <div class="card-footer p-4 pt-0 bg-transparent border-top-0">
-                                    <div class="d-flex align-items-end justify-content-between">
-                                        <div class="d-flex w-100 align-items-center justify-content-between">
-                                            <div class="small">
-                                                <div class="ffw-normal"> Date de publication</div>
-                                                <div class="text-muted">{{ object.created_at}}</div>
+                                    </div>
+                                    <div class="card-footer p-4 pt-0 bg-transparent border-top-0">
+                                        <div class="d-flex align-items-end justify-content-between">
+                                            <div class="d-flex w-100 align-items-center justify-content-between">
+                                                <div class="small">
+                                                    <div class="ffw-normal"> Date de publication</div>
+                                                    <div class="text-muted">{{ object.created_at}}</div>
+                                                </div>
+                                                <a class="w-auto btn bg-success text-white fw-semibold"  href="{% url 'details' object.id %}" >Plus d'info</a>
                                             </div>
-                                            <a class="w-auto btn bg-success text-white fw-semibold"  href="{% url 'details' object.id %}" >Plus d'info</a>
-                                        </div>
 
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
+
                         {% empty %}
-                        <p>Aucune maison disponible pour le moment</p>
+                          <div class="w-100 h-100 text-center">
+                            <p class="m-5  p-5 bg-light  "> Aucune maison disponible pour le moment</p>
+                        </div>
                     {% endfor %}
                   </div>
 
-                <div class="pagination w-100 navigation ">
-                    <span class="step-links mx-auto border-bottom border-top border-gray bg-light  p-1 px-3 rounded-2" >
-                        {% if page_obj.has_previous %}
-                            <a class="pe-2" href="{{ request.path }}?disponible={{ request.GET.disponible|default:'' }}&page=1">&laquo; first</a>
-                            <a class="" href="{{ request.path }}?disponible={{ request.GET.disponible|default:'' }}&page={{ page_obj.previous_page_number }}">previous</a>
-                        {% endif %}
 
-                        <span class="current fw-semibold px-1 page-item">
-                            Page {{ page_obj.number }} / {{ page_obj.paginator.num_pages }}
-                        </span>
 
-                        {% if page_obj.has_next %}
-                            <a class="" href="{{ request.path }}?disponible={{ request.GET.disponible|default:'' }}&page={{ page_obj.next_page_number }}">next</a>
-                            <a class="ps-2 page-item" href="{{ request.path }}?disponible={{ request.GET.disponible|default:'' }}&page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
-                        {% endif %}
-                    </span>
-                </div>
-
+            <nav aria-label="Page navigation example absolute bottom-0">
+                <ul class="pagination justify-content-center">
+                    <li class="{% if page_obj.has_previous %}  enabled {% else %} disabled  {% endif %} page-item">
+                        <a class="page-link"  href="{% if page_obj.has_previous %}  {{ request.path }}?disponible={{ request.GET.disponible|default:'' }}&page={{ page_obj.previous_page_number }}  {% endif %}">Précédent</a>
+                    </li>
+                    <li class="page-item"><a class="page-link" >{{ page_obj.number }}</a></li>
+                    <li class="page-item"><a class="page-link bg-secondary bg-opacity-10">/</a></li>
+                    <li class="page-item"><a class="page-link">{{ page_obj.paginator.num_pages }}</a></li>
+                    <li class="{% if page_obj.has_next %}  enabled {% else %} disabled  {% endif %} page-item">
+                        <a class="page-link" href="{% if page_obj.has_next %}  {{ request.path }}?disponible={{ request.GET.disponible|default:'' }}&page={{ page_obj.next_page_number }} {% endif %}">Suivant</a>
+                    </li>
+                </ul>
+            </nav>
 
             </div>
          </section>

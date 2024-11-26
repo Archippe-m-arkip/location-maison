@@ -11,6 +11,6 @@
 #     "user": "abc"
 # }
 #
-# response = requests.post("http://localhost:8000/apis", json=data)
+# response = requests.post("http://localhost:8000/api", json=data)
 #
 # print(response.json())
