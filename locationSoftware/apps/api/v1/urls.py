@@ -1,11 +1,16 @@
-from django.urls import path
+from django.urls import path, include
 from rest_framework.authtoken.views import obtain_auth_token
+from rest_framework.routers import DefaultRouter
 
-from .views import HouseListView_v1
+from .views import HouseViewSet, RentalViewSet
 
-app_name = "api"
+router = DefaultRouter()
+house =router.register(r'maisons', HouseViewSet, basename="list_house")
+rental =router.register(r'locations', RentalViewSet, basename="list_rental")
+
 
 urlpatterns = [
-    path("les-maisons/", HouseListView_v1.as_view()),
+    path("", include(router.urls)),
     path("connexion/", obtain_auth_token, name="login"),
 ]
+
