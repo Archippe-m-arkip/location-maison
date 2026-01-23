@@ -84,7 +84,7 @@ stevedore==5.3.0
     # via bandit
 terminator==0.0.0
     # via -r requirements.in
-werkzeug==3.0.4
+werkzeug==3.0.6
     # via flask
 wheel==0.46.2
     # via pip-tools
