@@ -3,7 +3,6 @@ from django.contrib.auth.models import Group, User
 from rest_framework import serializers
 
 
-
 class HouseSerializer(serializers.ModelSerializer):
     class Meta:
         model = House
@@ -24,4 +23,3 @@ class RentalSerializer(serializers.ModelSerializer):
     class Meta:
         model = Rental
         fields = "__all__"
-

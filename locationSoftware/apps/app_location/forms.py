@@ -19,7 +19,6 @@ class RentalForm(forms.ModelForm):
 
 
 class SignUpUser(UserCreationForm):
-
     email = forms.EmailField(required=True)  # On ajoute un champ email
     image = forms.ImageField(required=False)
 

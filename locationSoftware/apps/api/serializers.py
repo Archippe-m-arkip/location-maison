@@ -3,8 +3,6 @@ from django.contrib.auth.models import Group, User
 from rest_framework import serializers
 
 
-
-
 class HouseSerializer(serializers.ModelSerializer):
     class Meta:
         model = House
@@ -18,6 +16,7 @@ class HouseDeserializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         return House.objects.create(**validated_data)
+
 
 class RentalSerializer(serializers.ModelSerializer):
     class Meta:
