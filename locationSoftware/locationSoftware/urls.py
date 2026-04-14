@@ -15,11 +15,27 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 
+from debug_toolbar.toolbar import debug_toolbar_urls
+from django.conf import settings
+from django.conf.urls.i18n import i18n_patterns
+from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import include, path
 
-urlpatterns = [
-    path("admin/", admin.site.urls),
+urlpatterns = (
+    [
+        path("admin/", admin.site.urls),
+        path("i18n/", include("django.conf.urls.i18n")),
+    ]
+    + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    + debug_toolbar_urls()
+)
+
+urlpatterns += [path("silk/", include("silk.urls", namespace="silk"))]
+urlpatterns += i18n_patterns(
     path("accounts/", include("django.contrib.auth.urls")),
     path("", include("apps.app_location.urls")),
-]
+    path("api/", include("apps.api.urls")),
+    path("api-auth/", include("rest_framework.urls")),
+    prefix_default_language=True,
+)

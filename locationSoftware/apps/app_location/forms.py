@@ -1,6 +1,7 @@
+from apps.authuser.models import CustomUserManager, User
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth.models import User
+from django.forms import TextInput
 
 from .models import House, Paid, Payment, Rental
 
@@ -8,24 +9,25 @@ from .models import House, Paid, Payment, Rental
 class HouseForm(forms.ModelForm):
     class Meta:
         model = House
-        fields = "__all__"
+        exclude = ["created_by", "deleted_at"]
 
 
-class FormLocation(forms.ModelForm):
+class RentalForm(forms.ModelForm):
     class Meta:
         model = Rental
-        fields = "__all__"
+        fields = ["house", "user", "date_begin", "date_end"]
 
 
 class SignUpUser(UserCreationForm):
     email = forms.EmailField(required=True)  # On ajoute un champ email
+    image = forms.ImageField(required=False)
 
     class Meta:
         model = User
-        fields = ("username", "email", "password1", "password2")
+        fields = ["name", "username", "image", "email", "password1", "password2"]
 
 
-class Payment(forms.ModelForm):
+class PaymentForm(forms.ModelForm):
     class Meta:
         model = Payment
         fields = "__all__"

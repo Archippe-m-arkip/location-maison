@@ -10,9 +10,21 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
+import os.path
 from pathlib import Path
 
-from django.conf.global_settings import AUTH_USER_MODEL
+from django.conf.global_settings import (
+    AUTH_USER_MODEL,
+    LANGUAGES,
+    LOGIN_REDIRECT_URL,
+    LOGOUT_REDIRECT_URL,
+    MEDIA_ROOT,
+    MEDIA_URL,
+    STATIC_ROOT,
+    STATICFILES_DIRS,
+)
+from django.utils.translation import gettext_lazy as _
+from django_filters.conf import DEFAULTS
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -26,7 +38,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = []  # mettre l'adresse ip du serveur ici en chaines des caracteres
 
 
 # Application definition
@@ -38,24 +50,57 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "django.contrib.postgres",
+    "django.contrib.humanize",
+    # my apps
     "apps.app_location",
     "apps.authuser",
+    "apps.api",
     "apps.core",
+    # other apps
+    "rest_framework",
+    "rest_framework.authtoken",
+    "django_extensions",
+    "django_filters",
+    "widget_tweaks",
+    "fontawesomefree",
+    "debug_toolbar",
+    "silk",
 ]
 
 AUTH_USER_MODEL = "authuser.User"
 
+
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
+    "django.middleware.locale.LocaleMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
+    "silk.middleware.SilkyMiddleware",
+    # "debug_toolbar.middleware.DebugToolbarMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "apps.app_location.middleware.CheckUserAuthenticatedMiddleware",
 ]
 
 ROOT_URLCONF = "locationSoftware.urls"
+
+REST_FRAMEWORK = {
+    # Use Django's standard `django.contrib.auth` permissions,
+    # or allow read-only access for unauthenticated users.
+    "DEFAULT_PERMISSION_CLASSES": [
+        "rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly",
+    ],
+    "DEFAULT_VERSIONING_CLASS": "rest_framework.versioning.NamespaceVersioning",
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        "rest_framework.authentication.TokenAuthentication"
+    ],
+    "DEFAULT_FILTER_BACKENDS": [
+        "django_filters.rest_framework.DjangoFilterBackend",
+    ],
+}
 
 TEMPLATES = [
     {
@@ -68,6 +113,9 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+                "utils.context_processors.rent_context",
+                "utils.context_processors.remaining_time_context",
+                "utils.context_processors.rented_times_number",
             ],
         },
     },
@@ -86,6 +134,8 @@ DATABASES = {
     }
 }
 
+LOGIN_REDIRECT_URL = "/"
+LOGOUT_REDIRECT_URL = "/"
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
@@ -110,23 +160,56 @@ AUTH_PASSWORD_VALIDATORS = [
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
 
 LANGUAGE_CODE = "en-us"
+LANGUAGE_PREFIX_DEFAULT = True
 
-TIME_ZONE = "UTC"
+TIME_ZONE = "GMT"
 
 USE_I18N = True
 
+USE_L10N = True
+
 USE_TZ = True
+
+LANGUAGES = [
+    ("fr", _("French")),
+    ("en", _("English")),
+    ("de", _("German")),
+]
+
+BASE_DIR = Path(__file__).resolve().parent.parent
+LOCALE_PATHS = [
+    os.path.join(BASE_DIR, "/apps/app_location/locale"),
+]
 
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
+
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 
 STATIC_URL = "static/"
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "apps/app_location/static/appLocation"),
+    os.path.join(BASE_DIR, "static"),
+]
+
+
+MEDIA_ROOT = BASE_DIR / "media"
+MEDIA_URL = "/media/"
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+INTERNAL_IPS = [
+    # ...
+    "127.0.0.1",
+    # ...
+]
+
 try:
     from .localsettings import *
 except ImportError:

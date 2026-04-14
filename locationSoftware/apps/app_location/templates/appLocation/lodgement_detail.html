@@ -3,43 +3,103 @@
     {% block title %}
         Detail maison
     {% endblock %}
-    {% block content %}
-       <ul>
+{% load humanize %}
+{% block content %}
+    {% include 'appLocation/navbar.html' %}
 
-            <div style="display: flex; justify-content:space-between; padding-right:50px;">
-                <h1>Details house</h1>
-                <div style="display:flex; align-items: center; gap:20px">
-                    <h3>
-                         {% if user.is_authenticated %}
+    {% load static %}
+<div class="container px-4 px-lg-5">
+            <!-- Heading Row-->
+            <div class="row gx-4 gx-lg-5 align-items-center my-5">
+                <div class="img-fuid  col-lg-7 ">
+                    <img class="img-fluid  w-75 d-block mx-auto rounded mb-4 mb-lg-0" src="{{ theHouse.image.url }}" />
+                </div>
+                <div class="col-lg-5 bg-white card border-0 shadow-sm py-5">
+                    <div class=" w-100 ">
+                        <p class="fw-semibold fs-3 pb-3">Maison de type <span class="text-primary">{{theHouse.type_house}}</span></p>
+                         {% if theHouse.availability == True %}
+                            <p class="badge bg-success bg-opacity-75 bg-gradient rounded-pill mb-2 m-auto ">Disponible</p>
 
-                                {{ user.username }}
+                        {% else %}
+                            <div class="badge bg-danger  bg-opacity-50 bg-gradient rounded-pill mb-2 m-auto me-2">Non disponible</div>
+                            <div class="badge bg-black bg-opacity-10  bg-gradient  rounded-pill mb-2 m-auto text-black text-opacity-50">Libre le {{ rent.date_end }}</div>
 
                         {% endif %}
-                    </h3>
-                    <p>Logout</p>
+                    </div>
+                    <p><span class="fw-semibold text-black text-opacity-75">Nombre des chambres : </span> {{theHouse.nbrRooms}}</p>
+                    <p><span class="fw-semibold text-black text-opacity-75">Prix mensuel : </span>{{ theHouse.price | intcomma }} fbu</p>
+                    <p><span class="fw-semibold text-black text-opacity-75">Nbr de fois louee : </span>{{ object.nbr_locations | intcomma }} </p>
+                    <p><span class="fw-semibold text-black text-opacity-75">Superficie de : </span> {{ theHouse.superficies | intcomma }}m<sup>2</sup></p>
+                    <p><span class="fw-semibold text-black text-opacity-75">Quartier : </span> {{ theHouse.quarter }}</p>
+                    <p><span class="fw-semibold text-black text-opacity-75">Adresse : </span> {{ theHouse.address }}</p>
+                    <p><span class="fw-semibold text-black text-opacity-75">Proprietaire : </span> {{ theHouse.user }}</p>
+
+                   <div class="d-flex gap-2 ">
+                      {% if user.is_authenticated %}
+
+                            {% if theHouse.availability == True %}
+
+                           <a href="{% url 'add_location' theHouse.id user.id %}"  class="btn btn-primary" type="submit" title="Prendre cette maison en location">Louer cette maison</a>
+                            {% else %}
+                           <a href=""  class="  btn   bg-black bg-opacity-10 text-black text-opacity-25  cursor-not-allowed"  type="submit" title="Cette maison ne peut etre louee pour le moment">Louer cette maison</a>
+
+                            {% endif %}
+
+
+                        {% if user.is_superuser %}
+                            <a href="{% url 'update' theHouse.id  %} " class="btn btn-light text-success">Modifier</a>
+                        {% endif %}
+
+
+                        {% if user.is_superuser %}
+                            <form action="{% url 'delete'  theHouse.id %}" method="post" style="display:inline;">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-danger" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette maison ?');">Supprimer</button>
+                            </form>
+                        {% endif %}
+                    {% else %}
+                        <p class="card p-2 px-2 border-1 border-danger border-opacity-25 bg-danger bg-opacity-10 text-gray small text-opacity-10 w-100">Vous devez être connecté pour réserver cette maison. <a href="{% url 'login' %}?next={{ request.path }}">Se connecter</a></p>
+                    {% endif %}
+
+                   </div>
                 </div>
             </div>
-           <ul>
-                <i>Maison numero</i>
-                <li>Nombre des chambres: {{theHouse.nbrRooms}}</li>
-                <li>Superficie de :  {{theHouse.superficies}}m<sup>2</sup></li>
-                <li>Quartier: {{theHouse.quarter}}</li>
-                <br>
-                <li>
-                    <a href="{% url 'houses' %}"  style="padding-right:10px">Retourner en arriere</a>
-                    <a href=""  style="padding-right:10px;padding-left:10px;color: green">Modifier</a>
-                    {% if user.is_authenticated %}
-                    <form action="" method="post">
-                        <input type="submit" value=" Réserver cette maison">
-                    </form>
-                    {% else %}
-                        <p>Vous devez être connecté pour réserver cette maison. <a href="{% url 'sign_in_user' %}">Connectez-vous</a></p>
-                    {% endif %}
-                </li>
-           </ul>
-
-            <br>
-            <br>
-
-        </ul>
+            <!-- Call to Action-->
+           <div>
+                <h3>Description</h3>
+            <div class="card text-black bg-light my-2 bg-opacity-50 mb-5  py-2 ">
+                <div class="card-body "><p class=" m-0">{{ theHouse.description }}</p></div>
+            </div>
+           </div>
+            <!-- Content Row-->
+            <div class="row gx-4 gx-lg-5">
+                <div class="col-md-4 mb-5">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h2 class="card-title">Card One</h2>
+                            <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Rem magni quas ex numquam, maxime minus quam molestias corporis quod, ea minima accusamus.</p>
+                        </div>
+                        <div class="card-footer"><a class="btn btn-primary btn-sm" href="#!">More Info</a></div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-5">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h2 class="card-title">Card Two</h2>
+                            <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quod tenetur ex natus at dolorem enim! Nesciunt pariatur voluptatem sunt quam eaque, vel, non in id dolore voluptates quos eligendi labore.</p>
+                        </div>
+                        <div class="card-footer"><a class="btn btn-primary btn-sm" href="#!">More Info</a></div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-5">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h2 class="card-title">Card Three</h2>
+                            <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Rem magni quas ex numquam, maxime minus quam molestias corporis quod, ea minima accusamus.</p>
+                        </div>
+                        <div class="card-footer"><a class="btn btn-primary btn-sm" href="#!">More Info</a></div>
+                    </div>
+                </div>
+            </div>
+</div>
     {% endblock %}

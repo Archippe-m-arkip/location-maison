@@ -3,9 +3,13 @@ from django.utils import timezone
 
 
 class BaseModelManager(models.Manager):
-
     def get_queryset(self):
+        # Retourne uniquement les objets non supprimés
         return super().get_queryset().filter(deleted_at__isnull=True)
+
+    def deleted(self):
+        # Retourne uniquement les objets supprimés
+        return super().get_queryset().filter(deleted_at__isnull=False)
 
 
 class BaseModel(models.Model):
@@ -30,5 +34,10 @@ class BaseModel(models.Model):
         self.deleted_at = timezone.now()
         self.save()
 
+    @property
     def is_deleted(self):
         return self.deleted_at is not None
+
+    @classmethod
+    def get_queryset(cls):
+        return cls.objects.filter(deleted_at__isnull=True)

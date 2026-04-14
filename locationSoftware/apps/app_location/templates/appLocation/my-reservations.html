@@ -1,0 +1,102 @@
+{% extends "appLocation/master.html" %}
+
+{% block title %}
+    Toutes les maisons
+{% endblock %}
+{% load humanize %}
+
+ {% block content %}
+        {% include 'appLocation/navbar.html' %}
+
+
+        <section class="py-2">
+            <div class="container px-5 m-bottom-2">
+
+                  <div class="row gx-5 justify-content-start mt-3">
+                     <div class="col-lg-8 col-xl-6">
+                        <div class="w-100">
+                              <h2 class="fw-bolder">Mes reservations</h2>
+                              <p class="w-auto fw-normal text-muted mb-5">Explorer les differentes categories de maisons et prenez en location toutes celles qui vous interesse</p>
+
+                        </div>
+                     </div>
+                  </div>
+                  <div class="row gx-5 ">
+                            <div class="d-flex justify-content-end w-100 gap-3 pb-4">
+
+
+                              <a class="w-auto btn bg-success text-white fw-semibold"  href="{% url 'payment' request.user.id %}" >Payer une reservation</a>
+
+
+
+                              <a class="w-auto btn bg-primary text-white fw-semibold"  href="{% url 'add_house' %}" >Ajouter une maison</a>
+
+                            </div>
+
+
+                                {% for object in object_list %}
+                                    {% if object.house.availability == False %}
+                                    <div class="col-lg-4 mb-5">
+                                        <div class="card h-100 shadow border-0">
+                                            <img class="card-img-top" src="{{ object.house.image.url }}" alt="..." />
+                                            <div class="card-body p-4">
+                                                    {% if object.house.availability %}
+                                                        <div class="badge bg-primary  bg-opacity-75 bg-gradient rounded-pill mb-3">Disponible</div>
+
+                                                    {% else %}
+                                                        <div class="badge bg-danger  bg-opacity-75 bg-gradient rounded-pill mb-3">Non disponible</div>
+
+                                                    {% endif %}
+
+
+
+                                                <div class="badge bg-primary bg-gradient rounded-pill mb-2"></div>
+                                                <a class="text-decoration-none link-dark stretched-link" href="{% url 'details' object.id %}"><h5 class="card-title mb-3"> Maison de type {{ object.house.type_house}} </h5></a>
+                                                <p class="card-text mb-0"><span class="fw-semibold text-black text-opacity-75">Nombre des chambres : </span>{{ object.house.nbrRooms |intcomma  }}</p>
+                                                <p class="card-text mb-0"><span class="fw-semibold text-black text-opacity-75">Price : </span>{{ object.house.price |intcomma }} fbu</p>
+                                                <p class="card-text mb-0"><span class="fw-semibold text-black text-opacity-75">Quartier :</span> {{ object.house.quarter }}</p>
+                                                <p class="card-text mb-0"><span class="fw-semibold text-black text-opacity-75">Adresse :</span> {{ object.house.address }} </p>
+                                                <p class="card-text mb-0"><span class="fw-semibold text-black text-opacity-75">Date de fin :</span> {{ object.date_end |date }} </p>
+                                            </div>
+                                            <div>
+
+                                            </div>
+                                            <div class="card-footer p-4 pt-0 bg-transparent border-top-0">
+                                                <div class="d-flex align-items-end justify-content-between">
+                                                    <div class="d-flex w-100 align-items-center justify-content-between">
+                                                        <div class="small">
+                                                            <div class="ffw-normal">Date de publication</div>
+                                                            <div class="text-muted">{{ object.house.created_at }}</div>
+                                                        </div>
+                                                        <a class="w-auto btn bg-success text-white fw-semibold"  href="{% url 'details' object.id %}" >Plus d'info</a>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                         {% endif %}
+                                    {% empty %}
+                                    <div class="w-100 h-100 text-center">
+                                        <p class="m-5  p-5 bg-light  "> Aucune maison disponible pour le moment</p>
+                                    </div>
+
+                                {% endfor %}
+                  </div>
+            <nav aria-label="Page navigation example absolute bottom-0">
+                <ul class="pagination justify-content-center">
+                    <li class="{% if page_obj.has_previous %}  enabled {% else %} disabled  {% endif %} page-item">
+                        <a class="page-link"  href="{% if page_obj.has_previous %}  {{ request.path }}?disponible={{ request.GET.disponible|default:'' }}&page={{ page_obj.previous_page_number }}  {% endif %}">Précédent</a>
+                    </li>
+                    <li class="page-item"><a class="page-link" >{{ page_obj.number }}</a></li>
+                    <li class="page-item"><a class="page-link bg-secondary bg-opacity-10">/</a></li>
+                    <li class="page-item"><a class="page-link">{{ page_obj.paginator.num_pages }}</a></li>
+                    <li class="{% if page_obj.has_next %}  enabled {% else %} disabled  {% endif %} page-item">
+                        <a class="page-link" href="{% if page_obj.has_next %}  {{ request.path }}?disponible={{ request.GET.disponible|default:'' }}&page={{ page_obj.next_page_number }} {% endif %}">Suivant</a>
+                    </li>
+                </ul>
+            </nav>
+
+            </div>
+         </section>
+{% endblock %}
