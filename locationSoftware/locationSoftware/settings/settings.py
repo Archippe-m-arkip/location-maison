@@ -159,7 +159,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
 
-LANGUAGE_CODE = "en-us"
+LANGUAGE_CODE = "fr"
 LANGUAGE_PREFIX_DEFAULT = True
 
 TIME_ZONE = "GMT"
@@ -176,15 +176,15 @@ LANGUAGES = [
     ("de", _("German")),
 ]
 
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
 LOCALE_PATHS = [
-    os.path.join(BASE_DIR, "/apps/app_location/locale"),
+    os.path.join(BASE_DIR, "apps/app_location/locale"),
 ]
 
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
-BASE_DIR = Path(__file__).resolve().parent.parent.parent
+# BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 

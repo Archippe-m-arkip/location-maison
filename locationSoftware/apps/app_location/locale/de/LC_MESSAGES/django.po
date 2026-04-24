@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-11-25 16:32+0200\n"
+"POT-Creation-Date: 2026-04-24 11:31+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,6 +17,71 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-#: templates/appLocation/lodgement_list.html:18
+
+#: apps/app_location/templates/appLocation/index.html:7
+msgid "Application de location"
+msgstr ""
+
+#: apps/app_location/templates/appLocation/index.html:17
+msgid "Bienvenus sur notre plateforme de location des maisons"
+msgstr ""
+
+#: apps/app_location/templates/appLocation/index.html:20
+msgid ""
+"Retrouvez trop rapidement des maisons en locations sur votre mesure et selon "
+"vos besoins par ici. "
+msgstr ""
+
+#: apps/app_location/templates/appLocation/index.html:28
+#, fuzzy
+#| msgid "Filtrer les maisons : "
+msgid "Explorer le maisons"
+msgstr "Filter all houses in the store germany"
+
+#: apps/app_location/templates/appLocation/index.html:31
+msgid "Apprendre plus"
+msgstr ""
+
+#: apps/app_location/templates/appLocation/index.html:51
+msgid "La bonne maniere de commencer a construire."
+msgstr ""
+
+#: apps/app_location/templates/appLocation/lodgement_list.html:18
 msgid "Filtrer les maisons : "
 msgstr "Filter all houses in the store germany"
+
+#: apps/app_location/templates/appLocation/navbar.html:10
+msgid "Rent-House"
+msgstr ""
+
+#: apps/app_location/templates/appLocation/navbar.html:31
+msgid "Accueil"
+msgstr ""
+
+#: apps/app_location/templates/appLocation/navbar.html:38
+msgid " Maisons"
+msgstr ""
+
+#: apps/app_location/templates/appLocation/navbar.html:45
+msgid " Mes reservations"
+msgstr ""
+
+#: apps/app_location/templates/appLocation/navbar.html:52
+msgid "Activites"
+msgstr ""
+
+#: apps/app_location/templates/appLocation/navbar.html:102
+msgid "Se connecter"
+msgstr ""
+
+#: locationSoftware/settings/settings.py:174
+msgid "French"
+msgstr ""
+
+#: locationSoftware/settings/settings.py:175
+msgid "English"
+msgstr ""
+
+#: locationSoftware/settings/settings.py:176
+msgid "German"
+msgstr ""

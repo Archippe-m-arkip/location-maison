@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-11-25 21:06+0200\n"
+"POT-Creation-Date: 2026-04-24 11:09+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,30 +18,68 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: locationSoftware/apps/app_location/templates/appLocation/lodgement_list.html:18
+#: apps/app_location/templates/appLocation/index.html:7
+msgid "Application de location"
+msgstr "Location app"
+
+#: apps/app_location/templates/appLocation/index.html:17
+msgid "Bienvenus sur notre plateforme de location des maisons"
+msgstr "Welcome to our House rental plateform"
+
+#: apps/app_location/templates/appLocation/index.html:20
+msgid ""
+"Retrouvez trop rapidement des maisons en locations sur votre mesure et selon "
+"vos besoins par ici. "
+msgstr "Find quickly houses in rent that convain you well here"
+
+#: apps/app_location/templates/appLocation/index.html:28
+msgid "Explorer le maisons"
+msgstr "Explore houses "
+
+#: apps/app_location/templates/appLocation/index.html:31
+msgid "Apprendre plus"
+msgstr "Learn more"
+
+#: apps/app_location/templates/appLocation/index.html:51
+msgid "La bonne maniere de commencer a construire."
+msgstr "A better way to start building."
+
+#: apps/app_location/templates/appLocation/lodgement_list.html:18
 msgid "Filtrer les maisons : "
-msgstr "Filter houses"
+msgstr "Filter houses :"
 
-#: locationSoftware/apps/app_location/templates/appLocation/navbar.html:8
+#: apps/app_location/templates/appLocation/navbar.html:10
 msgid "Rent-House"
-msgstr "Rent-House"
+msgstr "Rent-Houses"
 
-#: locationSoftware/apps/app_location/templates/appLocation/navbar.html:12
+#: apps/app_location/templates/appLocation/navbar.html:31
 msgid "Accueil"
 msgstr "Home"
 
-#: locationSoftware/apps/app_location/templates/appLocation/navbar.html:13
+#: apps/app_location/templates/appLocation/navbar.html:38
 msgid " Maisons"
 msgstr "Houses"
 
-#: locationSoftware/apps/app_location/templates/appLocation/navbar.html:14
+#: apps/app_location/templates/appLocation/navbar.html:45
 msgid " Mes reservations"
 msgstr "My reservations"
 
-#: locationSoftware/apps/app_location/templates/appLocation/navbar.html:15
+#: apps/app_location/templates/appLocation/navbar.html:52
 msgid "Activites"
 msgstr "Activities"
 
-#: locationSoftware/apps/app_location/templates/appLocation/navbar.html:30
-msgid "Changer la langue"
-msgstr "Change language"
+#: apps/app_location/templates/appLocation/navbar.html:102
+msgid "Se connecter"
+msgstr "Connexion"
+
+#: locationSoftware/settings/settings.py:174
+msgid "French"
+msgstr ""
+
+#: locationSoftware/settings/settings.py:175
+msgid "English"
+msgstr ""
+
+#: locationSoftware/settings/settings.py:176
+msgid "German"
+msgstr ""
